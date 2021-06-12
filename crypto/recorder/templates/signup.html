@@ -76,15 +76,19 @@
             <h2 class="main-heading">Create Account</h2>
             <div class="small">Follow the instruction to make it easier to register and you will be<br> 
                 able to explore inside</div><br>
-            <form action="" class="form-control">                
+            <form action="{% url 'Signup' %}" class="form-control" method="POST">                
+                {% csrf_token %}
                 <div>
-                    <input type="text" class="form-control p-2" name="username" id="username" placeholder="Username">
+                    <!-- <input type="text" class="form-control p-2" name="username" id="username" placeholder="Username"> -->
+                    {{ form.username }}
                 </div><br>
                 <div>
-                    <input type="email" class="form-control p-2" name="email" id="email" placeholder="Email">
+                    <!-- <input type="email" class="form-control p-2" name="email" id="email" placeholder="Email"> -->
+                    {{ form.email }}
                 </div><br>
                 <div>
-                    <input type="text" class="form-control p-2" name="password" id="password" placeholder="Password">
+                    <!-- <input type="text" class="form-control p-2" name="password" id="password" placeholder="Password"> -->
+                    {{ form.password }}
                 </div><br>
                 <div>
                     <input type="submit"  value="Create Account" class="btn1">

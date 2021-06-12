@@ -59,12 +59,15 @@
             <div class="container d-flex justify-content-center align-items-center" >
                 <div class="form-wrapper">
                     <h1 class="heading">Login To Your Account</h1>
-                    <form action="" class="form-control">
+                    <form action="{% url 'Login' %}" class="form-control" method="POST">
+                        {% csrf_token %}
                     <div class="get-1">
-                        <input type="text" class="p-2 form-control" name="name" id="name" placeholder="Enter Email or Phone">
+                        <!-- <input type="text" class="p-2 form-control" name="name" id="name" placeholder="Enter Email or Phone"> -->
+                        {{ form.username }}
                     </div><br>
                     <div class="get-1">
-                        <input type="password" class="p-2 form-control"  name="password" id="password" placeholder="Password">
+                        <!-- <input type="password" class="p-2 form-control"  name="password" id="password" placeholder="Password"> -->
+                        {{ form.password }}
                     </div>
                     <div class="row my-3">
                         <div class="col">
