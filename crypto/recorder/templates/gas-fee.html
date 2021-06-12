@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+          font-family: Arial;
+          background-color: #101119;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background: #6a6a75;
+          margin-left: 160px;
+          border: none;
+        }
+        
+        form.searchbar button {
+          float: left;
+          border: none;
+          width: 5%;
+          padding: 5px;
+          background: #6a6a75;
+          color: white;
+          font-size: 17px;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background: #0f142b;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+         } 
+        
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color: #0f142b;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  
+}
+.container{
+      margin-left: 175px !important;
+      margin-right: 175px !important;
+  }
+  .form-control{
+    background-color: #060d24;
+    color: white;
+    border: none;
+  }
+  .p-1{
+    color: #00f5b0;
+  }
+  .get{
+    opacity: 0.4;
+  }
+  .btn-1{
+    width: 20%;
+    background-color:#00f5b0 ;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+  }
+</style>
+    <title>Gas Fee</title>
+</head>
+<body>
+    <header>
+        <div class="row">
+            <div class="col-9">
+                <form class="searchbar" action="">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                  </form>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+        </div>
+       
+    </header>
+    <div class="sidebar">
+        <a href="purchases.html">Purchases</a><br><br>
+        <a  href="sales.html">Sales</a><br><br>
+        <a href="report.html">Reports</a><br><br>
+        <a class="active" href="gas-free.html">Gas free</a><br><br>
+        <a href="transaction.html">Transaction</a>
+
+    </div><br>
+
+    <div class="container">
+        <form action="" class="form-control">
+            <div class="form-wrapper">
+                <h3>Gas Fee</h3>
+            </div>
+        </form>
+        <form action="" class="form-control">
+            <div    class="form-wrapper">
+                <div class="row">
+                    <div class="col">
+                        <h4>Over all Gas Fee</h4>
+                    </div>
+                    <div class="col p-1">
+                        <p><strong>0.002323</strong></p>
+                        <!-- <p>value to be added here from backend</p> -->
+                    </div>
+                </div><hr>
+                <div class="row">
+                    <div class="col">
+                        <h4>Average Daily Gas Fee</h4>
+                    </div>
+                    <div class="col p-1">
+                        <p><strong>0.008786</strong></p>
+                        <!-- <p>value to be added here from backend</p> -->
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col">
+                        <h5>Add New Gas Fee</h5>
+                        <br>
+                        <input class="get" type="text" name="product name" id="pname">
+                        <br><br>
+                        <input class="get" type="date" name="adding-date" id="date" style="padding-left: 37px;">
+                        <br><br>
+                        <input class="get" type="number" name="gas fee" id="fee">
+                        <br><br>
+                        <form  action="add gass fee">
+                          <input class="btn-1" type="submit" value="Add">
+                        </form>
+                    </div>
+                    <div class="col">
+                        <img src="gas fee graph.PNG" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+          font-family: Arial;
+          background-color: #101119;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background:#666773;
+          margin-left: 160px;
+        }
+        
+        form.searchbar button {
+          float: left;
+          width: 5%;
+          padding: 5px;
+          background: #666773;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background: #0b7dda;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+         } 
+        
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color: #10152c;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  
+}
+.container{
+      margin-left: 175px !important;
+      margin-right: 175px !important;
+  }
+  .form-control{
+    background-color: #0b1021;
+    color: white;
+    border: none;
+  }
+  .btn-2{
+    background-color: #00f5b0;
+    width: 60%;
+    border: none;
+  }
+  .btn-3{
+    background-color: #00f5b0;
+    width: 10%;
+    border: none;
+  }
+  .get{
+    opacity: 0.5;
+  }
+</style>
+        
+    <title>Sales</title>
+</head>
+<body>
+    <header>
+        <div class="row">
+            <div class="col-9">
+                <form class="searchbar" action="/action_page.php">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                  </form>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+        </div>
+       
+    </header>
+    <div class="sidebar">
+        <a href="purchases.html">Purchases</a><br><br>
+        <a class="active" href="sales.html">Sales</a><br><br>
+        <a href="report.html">Reports</a><br><br>
+        <a href="gas-fee.html">Gas fee</a><br><br>
+        <a href="transaction.html">Transaction</a>
+
+    </div>
+    <br>
+    
+    <div class="container" >
+        <div class="form-wrapper " >
+            <form action="" class="form-control">
+                <div class="row">
+                    <div class="col">
+                        <h3 >Sales</h3>
+                    </div>
+                    <div class="col-2">
+                      <form  action="">
+                        <input class="btn-2" type="submit" value="+New">
+                      </form>
+                    </div>
+                </div>
+            </form>
+
+            <form action="" class="form-control ">
+                <div class="form-wrapper">
+                    <label for="pname">Product name</label><br>
+                    <select class="get" name="Product name" id="pname">
+                        <option value="kryptonite">kryptonite</option>
+                        <option value="etherium">Etherium</option>
+                        <option value="dodge coin">Dodge Coin</option>
+                    </select><br>
+                    <br>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="sprice">Sales Price</label><br>
+                        <input class="get" type="number" name="sale price" id="sprice">
+                    </div>
+                    <div class="col">
+                        <label for="percentage">Percentage</label>
+                        <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
+                            <input class="get" type="number" id="number" value="0" />
+                            <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">
+                            </div>
+
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label for="sold-quantity">Sold Quantity</label><br>
+                    <input class="get" type="number" id="sold-quantity" value="0">
+                </div>
+                <br>
+                <div class="row d=flex justify-content-center">
+                    <div class="col">
+                      <form  action="delete">
+                        <input class="btn-3" type="submit" value="Delete">
+                      </form>
+                      <br>
+                      <form  action="save">
+                        <input class="btn-3" type="submit" value="Save">
+                      </form>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
