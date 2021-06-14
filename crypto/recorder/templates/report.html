@@ -116,6 +116,19 @@ div.content {
         .col-4{
           color:#00f5b0 ;
         }
+        .form-top{
+          border-bottom: 1px solid #1b1f2e;
+        }
+        hr{
+          margin-top: 0px;
+        }
+        #heading{
+          font-weight: 550;
+        }
+        .progress{
+          width: 60%;
+        }
+        
 </style>
     <title>Reports</title>
 </head>
@@ -135,28 +148,32 @@ div.content {
        
     </header>
     <div class="sidebar">
-        <a href="purchases.html">Purchases</a><br><br>
-        <a  href="sales.html">Sales</a><br><br>
-        <a class="active" href="report.html">Reports</a><br><br>
-        <a href="gas-fee.html">Gas fee</a><br><br>
+        <a href="purchases.html">Purchases</a><br>
+        <a  href="sales.html">Sales</a><br>
+        <a class="active" href="report.html">Reports</a><br>
+        <a href="gas-fee.html">Gas fee</a><br>
         <a href="transaction.html">Transaction</a>
+        <a href="suggestions.html">Suggestions</a><br>
+        <a href="add-suggestion.html">Add Suggestions</a><br>
+        <a href="admin.html">Admin</a><br>
+        <a href="email">Email</a>
 
     </div>
     <br>
-    <div class="container">
-        <form action="" class="form-control">
+    <div class="container px-4 my-4">
+        <form action="" class="form-control p-4 form-top">
             <div class="form-wrapper">
                 <h3>Reports</h3>
             </div>
         </form>
-        <form action="" class="form-control">
+        <form action="" class="form-control py-2 px-5 pt-3">
             <div class="form-wrapper">
                 <div class="row">
                     <div class="col">
-                        <h3>Etherium Profit</h3>
+                        <h2 id="heading">Etherium Profit</h2>
                     </div>
                     <div class="col-4">
-                      <h4>0.002343</h4>
+                      <h2>0.002343</h2>
                     </div>
                 </div><hr>
                 <div>
@@ -179,28 +196,36 @@ div.content {
                     </div>
                 </div><br>
                 <div class="row">
+                  <div class="col">
+                      <div class="progress">
+                          <div class="progress-bar bg-success" role="progressbar" aria-valuenow="10"
+                          aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                            50%
+                          </div>  
+                      </div> 
+                  </div>
+              </div><br>
+              <div class="row">
+                <div class="col">
                     <div class="progress">
                         <div class="progress-bar bg-success" role="progressbar" aria-valuenow="10"
-                        aria-valuemin="0" aria-valuemax="100" style="width:67%">
-                          67%
-                        </div>
-                    </div>
-                </div><br>
-                <div class="row">
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="10"
-                        aria-valuemin="0" aria-valuemax="100" style="width:54%">
-                          54%
-                        </div>
-                    </div>
-                </div><br>
-                <div class="row">
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="10"
-                        aria-valuemin="0" aria-valuemax="100" style="width:85%">
-                          85%
-                        </div>
-                    </div>
+                        aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                          20%
+                        </div>  
+                    </div> 
+                </div>
+            </div><br>
+            <div class="row">
+              <div class="col">
+                  <div class="progress">
+                      <div class="progress-bar bg-success" role="progressbar" aria-valuenow="10"
+                      aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                        20%
+                      </div>  
+                  </div> 
+              </div>
+          </div><br>
+                
                 </div>
         </form>
     </div>
