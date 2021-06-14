@@ -182,7 +182,7 @@ form.searchbar input[type=text] {
                 </div>
                 <div></div>
             </form>
-            <form action="" class="form-control px-4">
+            <form action="{% url 'Purchase' %}" class="form-control px-4">
               <div class="form-wrapper no-border py-4">
                 <label for="pname">Product name</label><br>
                 <!-- <select class="get form-control half" name="Product name" id="pname">
@@ -202,7 +202,7 @@ form.searchbar input[type=text] {
                     <label for="pquantity">Product Quantity</label><br> 
                     <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
                         <!-- <input class="get form-control more-half" type="number" id="number" value="0" /> -->
-                        {{ form.price }}
+                        {{ form.qunatity }}
                         <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value"></div>
                   </div>
                 </div>
@@ -222,5 +222,10 @@ form.searchbar input[type=text] {
             </form>
         </div>
     </div>
+    <script>
+      document.querySelector("#id_timestamp").type="date"
+      document.querySelector("#id_product").className="get form-control half"
+      
+    </script>
 </body>
 </html>

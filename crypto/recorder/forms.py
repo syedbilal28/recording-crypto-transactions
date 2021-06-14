@@ -23,7 +23,10 @@ class ProductForm(ModelForm):
         fields="__all__"
 
 class PurchaseForm(ModelForm):
-    
+    note=forms.CharField(max_length=200,widget=forms.Textarea(attrs={"class":"get form-control quarter","col":"30","rows":"5"}))
+    price=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
+    qunatity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
+    timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half"}))
     class Meta:
         model=Transaction
         fields="__all__"
