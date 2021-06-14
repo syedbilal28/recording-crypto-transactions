@@ -25,8 +25,19 @@ class ProductForm(ModelForm):
 class PurchaseForm(ModelForm):
     note=forms.CharField(max_length=200,widget=forms.Textarea(attrs={"class":"get form-control quarter","col":"30","rows":"5"}))
     price=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
-    qunatity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
+    quantity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
     timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half"}))
+    Type=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"value":"purchase"}))
+    class Meta:
+        model=Transaction
+        fields="__all__"
+
+class SaleForm(ModelForm):
+    note=forms.CharField(max_length=200,widget=forms.Textarea(attrs={"class":"get form-control quarter","col":"30","rows":"5"}))
+    price=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
+    quantity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
+    timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half"}))
+    Type=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"value":"purchase"}))
     class Meta:
         model=Transaction
         fields="__all__"

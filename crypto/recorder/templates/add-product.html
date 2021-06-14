@@ -198,18 +198,19 @@ div.content {
       </form> 
       <br>     
 
-            <form action="{% url 'Addproduct' %}" id="product-form" class="form-control py-3">
+            <form action="{% url 'Addproduct' %}" id="product-form" class="form-control py-3" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
                 <div class="form-wrapper">
                     <div class="row">
                         <div class="col">
                           
                             <div class="image-upload-wrap">
                               
-                                <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*">
+                                <!-- <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*"> -->
                                 <div class="file-upload-content mr-5 my-2 d-flex flex-column align-items-center justify-content-center">
                                     <div class="upload-option"><i class="fas fa-cloud-upload-alt"></i></div>
                                     <div class="upload-option"><h5 id="upload-text">Upload image here</h5></div>
-                                    <!-- <img class="file-upload-image" src="#" alt=""> -->
+                                    <img class="file-upload-image" src="#" alt="">
                                     {{ form.image }}
                                     <div class="image-tittle-wrap" ></div>
                                 </div>
@@ -261,11 +262,12 @@ div.content {
       document.querySelector("#id_Type").className="choice form-select"
 
       $(".file-upload-content").on("click",function(){
-        $(".file-upload-input").trigger("click")
+        // $(".file-upload-input").trigger("click")
+        document.querySelector(".file-upload-input").click()
       })
     const inpFile= document.querySelector(".file-upload-input") 
     inpFile.addEventListener("change",function(){
-      
+    
       const file = this.files[0]
       console.log(file)
       if (file) {

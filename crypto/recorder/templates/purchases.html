@@ -141,6 +141,14 @@ form.searchbar input[type=text] {
         textarea{
           min-height:200px;
         }
+        .purchase{
+          background-color: #00f5b0 !important;
+          border: none;
+          border-radius: 1rem;
+        }
+        #id_Type{
+          display: none;
+        }
     </style>        
     <title>Purchases</title>
 </head>
@@ -182,7 +190,9 @@ form.searchbar input[type=text] {
                 </div>
                 <div></div>
             </form>
-            <form action="{% url 'Purchase' %}" class="form-control px-4">
+            <form action="{% url 'Purchase' %}" class="form-control px-4" method="POST">
+              {% csrf_token %}
+              {{ form.Type }}
               <div class="form-wrapper no-border py-4">
                 <label for="pname">Product name</label><br>
                 <!-- <select class="get form-control half" name="Product name" id="pname">
@@ -202,7 +212,7 @@ form.searchbar input[type=text] {
                     <label for="pquantity">Product Quantity</label><br> 
                     <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
                         <!-- <input class="get form-control more-half" type="number" id="number" value="0" /> -->
-                        {{ form.qunatity }}
+                        {{ form.quantity }}
                         <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value"></div>
                   </div>
                 </div>
@@ -217,6 +227,9 @@ form.searchbar input[type=text] {
                   <label for="pnote">Note</label><br>
                   <!-- <textarea class="get form-control quarter" name="text" id="pnote" cols="30" rows="5"></textarea> -->
                   {{ form.note }}
+                </div>
+                <div class="my-3">
+                  <button class="btn btn-primary purchase" type="submit">Purchase</button>
                 </div>
               </div>
             </form>

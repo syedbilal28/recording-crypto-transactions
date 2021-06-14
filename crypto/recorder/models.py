@@ -68,24 +68,31 @@ class Collection(models.Model):
     name=models.CharField(max_length=100)
     logo=models.ImageField(upload_to=to_upload)
 
+    def __str__(self):
+        return self.name
+
 class Type(models.Model):
     name=models.CharField(max_length=100)
     logo=models.ImageField(upload_to=to_upload_type)
+    def __str__(self):
+        return self.name
+    
     
 class Product(models.Model):
     name=models.CharField(max_length=100)
     collection=models.ForeignKey(Collection,on_delete=models.CASCADE)
     Type=models.ForeignKey("Type",on_delete=models.CASCADE)
     image= models.ImageField(upload_to=upload_product)
-
+    def __str__(self):
+        return self.name
 
 class Transaction(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     price=models.IntegerField()
     Type= models.CharField(max_length=10)
     quantity=models.IntegerField()
-    percentage=models.FloatField(null=True)
-    timestamp=models.DateTimeField()
+    # percentage=models.FloatField(null=True)
+    timestamp=models.DateField()
     note= models.CharField(max_length=2000,null=True)
 
 

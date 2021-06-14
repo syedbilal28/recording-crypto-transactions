@@ -1,7 +1,9 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
-from .forms import ProductForm, SignupForm,LoginForm,PurchaseForm
+from .forms import ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
 from django.contrib.auth import login, logout,authenticate
+from .models import Transaction,Product
+from datetime import datetime
 # Create your views here.
 def signup(request):
     if request.method== "POST":
@@ -33,7 +35,22 @@ def Login(request):
 
 def purchase(request):
     if request.method=="POST":
-        pass
+        form=PurchaseForm(request.POST)
+        data=request.POST
+        print(data)
+        transaction=Transaction.objects.create(
+            product=Product.objects.get(pk=int(data['product'])),
+            price=int(data['price']),
+            Type=data['Type'],
+            quantity=int(data['quantity']),
+            timestamp=datetime.strptime(data['timestamp'],'%Y-%m-%d').date(),
+            note=data['note']
+        )
+        # print(request.POST)
+        # print(form.is_valid())
+        # if form.is_valid():
+        #     form.save()
+            
     else:
         form=PurchaseForm()
         context={"form":form}
@@ -48,4 +65,10 @@ def AddProduct(request):
         form=ProductForm()
         context={"form":form}
         return render(request,"add-product.html",context)
-# def
+def sale(request):
+    if request.method == "POST":
+        pass
+    else:
+        form= SaleForm()
+        context={"form":form}
+        return render(request,"sales.html",context)
