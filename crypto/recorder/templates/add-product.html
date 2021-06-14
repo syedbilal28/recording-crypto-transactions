@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/dd623901d8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
         body {
           font-family: Arial;
@@ -122,8 +124,37 @@ div.content {
     padding: 7px;
     opacity: 0.4;
   }
-  
+  .file-upload-input{
+    display: none;
+  }
+  .file-upload-content{
+    border: 1px dashed white;
+    height: 100%;
+    max-width: 60%;
+    text-align: center;
+  }
+  .file-upload-content:hover{
+    cursor: pointer;
+  }
+  .image-upload-wrap{
+    height: 100%;
+    position: relative;
+  }
+/* #upload-text{
+  position: absolute;
+  top: 75%;
+  left: 23%;
 
+}*/
+.fas{
+  font-size: 30px;
+  /* position: absolute;
+  top: 65%;
+  left:28%; */
+} 
+.file-upload-image{
+  max-width: 135%;
+}
     </style>
     <title>Add New Product</title>
 </head>
@@ -153,7 +184,7 @@ div.content {
     <br>
     <div class="container">
       <form action="" class="form-control">
-          <div class="form-wrapper">
+          <div class="form-wrapper mx-5">
                 <div class="row">
                     <div class="col">
                         <h3>Add New Product</h3>
@@ -167,42 +198,52 @@ div.content {
       </form> 
       <br>     
 
-            <form action="" class="form-control">
+            <form action="{% url 'Addproduct' %}" id="product-form" class="form-control py-3">
                 <div class="form-wrapper">
                     <div class="row">
                         <div class="col">
-                            <h5>Upload image here</h5>
+                          
                             <div class="image-upload-wrap">
+                              
                                 <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*">
-                                <div class="file-upload-content">
-                                    <img class="file-upload-image" src="#" alt="">
+                                <div class="file-upload-content mr-5 my-2 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="upload-option"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <div class="upload-option"><h5 id="upload-text">Upload image here</h5></div>
+                                    <!-- <img class="file-upload-image" src="#" alt=""> -->
+                                    {{ form.image }}
                                     <div class="image-tittle-wrap" ></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <label for="pname">Product name</label><br>
-                            <select class="choice" name="Product name" id="pname">
+                            <!-- <select class="choice form-select" name="Product name" id="pname">
                                 <option value="kryptonite">kryptonite</option>
                                 <option value="etherium">Etherium</option>
                                 <option value="dodge coin">Dodge Coin</option>
-                            </select><br>
+                            </select> -->
+                            {{ form.name }}
                             <br>
+                            
                             <div>
                                 <label for="pcollection">Collection</label><br>
-                                <select class="choice name="product collection" id="pcollection">
+                                <!-- <select class="choice form-select"name="product collection" id="pcollection">
                                     <option value="kryptonite">kryptonite</option>
                                     <option value="etherium">Etherium</option>
                                     <option value="dodge coin">Dodge Coin</option>
-                                </select><br>
-                            </div><br>
+                                </select> -->
+                                {{ form.collection }}
+                                <br>
+                            </div>
                             <div>
                                 <label for="ptype">Type</label><br>
-                                <select class="choice name="Product type" id="ptype">
+                                <!-- <select class="choice form-select"name="Product type" id="ptype">
                                     <option value="kryptonite">kryptonite</option>
                                     <option value="etherium">Etherium</option>
                                     <option value="dodge coin">Dodge Coin</option>
-                                </select><br>
+                                </select> -->
+                                {{ form.Type }}
+                                <br>
                             </div>
                         </div>
                     </div>
@@ -210,5 +251,38 @@ div.content {
             </form>
         </div>
     </div>
+    <script>
+      $(".btn-1").on("click",function(){
+          $("#product-form").submit()
+      })
+      document.querySelector("#id_image").className="file-upload-input"
+      document.querySelector("#id_name").className="choice form-select"
+      document.querySelector("#id_collection").className="choice form-select"
+      document.querySelector("#id_Type").className="choice form-select"
+
+      $(".file-upload-content").on("click",function(){
+        $(".file-upload-input").trigger("click")
+      })
+    const inpFile= document.querySelector(".file-upload-input") 
+    inpFile.addEventListener("change",function(){
+      
+      const file = this.files[0]
+      console.log(file)
+      if (file) {
+        const reader=new FileReader()
+        
+        reader.addEventListener("load",function(){
+          document.querySelector(".file-upload-image").setAttribute("src",this.result)
+          document.querySelector(".file-upload-input").setAttribute("value",file)
+          $(".upload-option").css("display","none")
+          $(".file-upload-content").css("border","none")
+        })
+        reader.readAsDataURL(file);
+
+
+      }
+
+    });
+    </script>
 </body>
 </html>

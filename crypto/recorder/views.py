@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
-from .forms import SignupForm,LoginForm,PurchaseForm
+from .forms import ProductForm, SignupForm,LoginForm,PurchaseForm
 from django.contrib.auth import login, logout,authenticate
 # Create your views here.
 def signup(request):
@@ -38,3 +38,14 @@ def purchase(request):
         form=PurchaseForm()
         context={"form":form}
         return render(request,"purchases.html",context)
+
+def AddProduct(request):
+    if request.method=="POST":
+        form=ProductForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form=ProductForm()
+        context={"form":form}
+        return render(request,"add-product.html",context)
+# def

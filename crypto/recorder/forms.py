@@ -16,7 +16,7 @@ class LoginForm(Form):
     password=forms.CharField(max_length=100,widget=forms.PasswordInput(attrs={"placeholder":"Password","class":"form-control p-2"}))
 
 class ProductForm(ModelForm):
-    name=forms.CharField(max_length=100,widget=forms.TextInput(attrs={"class":"choice","id":"pname"}))
+    # name=forms.CharField(max_length=100,widget=forms.TextInput(attrs={"class":"choice","id":"pname"}))
     # collection=forms.CharField(max_length=50,widget=Select)
     class Meta:
         model=Product   
@@ -30,3 +30,4 @@ class PurchaseForm(ModelForm):
     class Meta:
         model=Transaction
         fields="__all__"
+
