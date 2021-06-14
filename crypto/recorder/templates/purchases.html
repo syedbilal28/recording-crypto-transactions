@@ -101,11 +101,13 @@ form.searchbar input[type=text] {
           display: table;
         }
         .btn-2{
-          background-color: #00f5b0;
+          background-color: #00f5b0 !important;
           border: none;
+          font-weight: 600;
           text-align: center;
-          border-radius: 8px;
-          width: 100%;
+          border-radius: 1rem;
+          
+          /* width: 100%; */
         }
         
         .form-control{
@@ -114,10 +116,30 @@ form.searchbar input[type=text] {
         }
         .form-wrapper{
           color: white;
+          border: 1px solid #1b1f2e;
+        }
+        .form-top{
+          border-bottom: 1px solid #1b1f2e;
         }
         .get{
           opacity: 0.5;
+          background-color: white;
           
+        }
+        .half{
+          width: 25%;
+        }
+        .no-border{
+          border: none;
+        }
+        .more-half{
+          width: 79%;
+        }
+        .quarter{
+          width: 59%;
+        }
+        textarea{
+          min-height:200px;
         }
     </style>        
     <title>Purchases</title>
@@ -144,52 +166,57 @@ form.searchbar input[type=text] {
         <a href="#transaction">Transaction</a>
     </div>
     <br>
-    <div class="container">
-        <div class="form-wrapper">
-            <form action="" class="form-control">
+    <div class="container px-4">
+        <div class="form-wrapper m-5 rounded ">
+            <form action="" class="form-control px-4 py-3 form-top">
                 <div class="row">
                     <div class="col">
                         <h3 style="color: white;">Purchases</h3>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
                       <form  action="add-product.html">
-                        <input class="btn-2" type="submit" value="Add New Product">
+                        <input class="btn-2 p-2 px-3" type="submit" value="Add New Product">
                       </form>
                     
                     </div>                    
                 </div>
                 <div></div>
             </form>
-            <form action="" class="form-control">
-              <div class="form-wrapper">
+            <form action="" class="form-control px-4">
+              <div class="form-wrapper no-border py-4">
                 <label for="pname">Product name</label><br>
-                <select class="get" name="Product name" id="pname">
+                <!-- <select class="get form-control half" name="Product name" id="pname">
                   <option value="kryptonite">kryptonite</option>
                   <option value="etherium">Etherium</option>
-                  <option value="dodge coin">Dodge Coin</option>
+                  <option value="dodge coin">Dodge Coin</option> -->
+                  {{ form.product }}
                 </select><br>
-                <br>
+                
                 <div class="row">
-                  <div class="col">
+                  <div class="col-4">
                     <label for="pprice">Product price</label><br>
-                    <input class="get" type="number" name="product price" id="pprice">
+                    <!-- <input class="get form-control more-half" type="number" name="product price" id="pprice"> -->
+                    {{ form.price }}
                   </div>
-                  <div class="col">
+                  <div class="col-4">
                     <label for="pquantity">Product Quantity</label><br> 
                     <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
-                        <input class="get" type="number" id="number" value="0" />
+                        <!-- <input class="get form-control more-half" type="number" id="number" value="0" /> -->
+                        {{ form.price }}
                         <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value"></div>
                   </div>
                 </div>
                 <br>
                 <div>
                   <label for="pdate">Purchase Date</label><br>
-                  <input class="get" type="date" name="purchase date" id="pdate">
+                  <!-- <input class="get form-control half" type="date" name="purchase date" id="pdate"> -->
+                  {{ form.timestamp }}
                 </div>
                 <br>
                 <div>
                   <label for="pnote">Note</label><br>
-                  <textarea class="get" name="text" id="pnote" cols="30" rows="5"></textarea>
+                  <!-- <textarea class="get form-control quarter" name="text" id="pnote" cols="30" rows="5"></textarea> -->
+                  {{ form.note }}
                 </div>
               </div>
             </form>

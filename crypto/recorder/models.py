@@ -85,7 +85,8 @@ class Transaction(models.Model):
     Type= models.CharField(max_length=10)
     quantity=models.IntegerField()
     percentage=models.FloatField(null=True)
-    timestamp=models.DateTimeField(auto_now_add=True)
+    timestamp=models.DateTimeField()
+    note= models.CharField(max_length=2000,null=True)
 
 
 
