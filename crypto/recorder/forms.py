@@ -1,6 +1,7 @@
 from django.forms import ModelForm,Form
 from django import forms
 from django.contrib.auth.models import User
+from django.forms.widgets import NumberInput
 from .models import Product, Transaction
 class SignupForm(ModelForm):
     username=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"placeholder":"username","class":"form-control p-2"}))
@@ -35,9 +36,11 @@ class PurchaseForm(ModelForm):
 class SaleForm(ModelForm):
     note=forms.CharField(max_length=200,widget=forms.Textarea(attrs={"class":"get form-control quarter","col":"30","rows":"5"}))
     price=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
-    quantity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
+    quantity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control half"}))
     timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half"}))
-    Type=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"value":"purchase"}))
+    Type=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"value":"sale"}))
+    # product=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"class":"get form-control half"}))
+    percentage=forms.IntegerField(widget=NumberInput(attrs={"class":"get form-control more-half"}))
     class Meta:
         model=Transaction
         fields="__all__"

@@ -91,8 +91,8 @@ class Transaction(models.Model):
     price=models.IntegerField()
     Type= models.CharField(max_length=10)
     quantity=models.IntegerField()
-    # percentage=models.FloatField(null=True)
-    timestamp=models.DateField()
+    percentage=models.FloatField(null=True,blank=True)
+    timestamp=models.DateField(null=True)
     note= models.CharField(max_length=2000,null=True)
 
 

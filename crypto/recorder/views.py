@@ -67,7 +67,17 @@ def AddProduct(request):
         return render(request,"add-product.html",context)
 def sale(request):
     if request.method == "POST":
-        pass
+        form=SaleForm(request.POST)
+        data=request.POST
+        print(data)
+        transaction=Transaction.objects.create(
+            product=Product.objects.get(pk=int(data['product'])),
+            price=int(data['price']),
+            Type=data['Type'],
+            quantity=int(data['quantity']),
+            
+            
+        )
     else:
         form= SaleForm()
         context={"form":form}

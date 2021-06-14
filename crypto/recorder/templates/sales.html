@@ -112,17 +112,42 @@ div.content {
   }
   .btn-2{
     background-color: #00f5b0;
-    width: 60%;
+    /* width: 60%; */
+    color: black;
+    border-radius: 1rem;
     border: none;
+    font-weight: 550;
   }
   .btn-3{
     background-color: #00f5b0;
-    width: 10%;
+    /* width: 10%; */
     border: none;
+    color: black;
+    border-radius: 1rem;
+    font-weight: 550;
   }
   .get{
     opacity: 0.5;
+    background-color: white;
   }
+  .half{
+          width: 25%;
+        }
+        .no-border{
+          border: none;
+        }
+        .more-half{
+          width: 79%;
+        }
+        .quarter{
+          width: 59%;
+        }
+        .form-top{
+          border-bottom: 1px solid #1b1f2e;
+        }
+        #id_Type{
+          display: none;
+        }
 </style>
         
     <title>Sales</title>
@@ -152,40 +177,48 @@ div.content {
     </div>
     <br>
     
-    <div class="container" >
-        <div class="form-wrapper " >
-            <form action="" class="form-control">
+    <div class="container px-4" >
+        <div class="form-wrapper m-5 rounded" >
+            <form action="" class="form-control px-4 py-3 form-top" >
+              {% csrf_token %}
+              
                 <div class="row">
                     <div class="col">
                         <h3 >Sales</h3>
                     </div>
                     <div class="col-2">
                       <form  action="">
-                        <input class="btn-2" type="submit" value="+New">
+                        <button class="btn-2 btn btn-primary px-4"><span class='big-font'>+ </span>New</button>
                       </form>
                     </div>
                 </div>
             </form>
 
-            <form action="" class="form-control ">
-                <div class="form-wrapper">
+            <form action="{% url 'Sale' %}" class="form-control px-4" method="POST">
+              {% csrf_token %}
+              {{ form.Type }}
+                <div class="form-wrapper py-4">
                     <label for="pname">Product name</label><br>
-                    <select class="get" name="Product name" id="pname">
+                    <!-- <select class="get form-control half" name="Product name" id="pname">
                         <option value="kryptonite">kryptonite</option>
                         <option value="etherium">Etherium</option>
-                        <option value="dodge coin">Dodge Coin</option>
-                    </select><br>
-                    <br>
+
+                        <option value="dodge coin">Dodge Coin</option> -->
+                        {{ form.product }}
+                    </select>
+                    
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-4">
                         <label for="sprice">Sales Price</label><br>
-                        <input class="get" type="number" name="sale price" id="sprice">
+                        <!-- <input class="get form-control more-half" type="number" name="sale price" id="sprice"> -->
+                        {{ form.price }}
                     </div>
-                    <div class="col">
+                    <div class="col-4">
                         <label for="percentage">Percentage</label>
                         <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
-                            <input class="get" type="number" id="number" value="0" />
+                            <!-- <input class="get form-control more-half" type="number" id="number" value="0" /> -->
+                            {{ form.percentage }}
                             <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">
                             </div>
 
@@ -194,22 +227,25 @@ div.content {
                 <br>
                 <div>
                     <label for="sold-quantity">Sold Quantity</label><br>
-                    <input class="get" type="number" id="sold-quantity" value="0">
+                    <!-- <input class="get form-control half" type="number" id="sold-quantity" value="0"> -->
+                    {{ form.quantity }}
                 </div>
                 <br>
-                <div class="row d=flex justify-content-center">
-                    <div class="col">
-                      <form  action="delete">
-                        <input class="btn-3" type="submit" value="Delete">
-                      </form>
-                      <br>
-                      <form  action="save">
-                        <input class="btn-3" type="submit" value="Save">
-                      </form>
+                <div class="d-flex">
+                    <div class="m-2">
+                      
+                        <button class="btn-3 btn btn-primary px-4" type="submit">Delete</button>
+                      </div>
+                      <div class="m-2">
+                        <button class="btn-3 btn btn-primary px-4" type="submit">Save</button>
+                      
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <script>
+      document.querySelector("#id_product").className="get form-control half"
+    </script>
 </body>
 </html>
