@@ -82,3 +82,11 @@ def sale(request):
         form= SaleForm()
         context={"form":form}
         return render(request,"sales.html",context)
+
+def report(request,product_id):
+    product= Product.objects.get(pk=int(product_id))
+    transactions= Transaction.objects.filter(product=product)
+    purchases= transactions.filter(Type="purchase")
+    sales= transactions.filter(Type="sale")
+    
+    return render(request,"report.html")

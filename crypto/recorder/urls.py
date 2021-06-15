@@ -5,5 +5,6 @@ urlpatterns=[
     path("",views.Login,name="Login"),
     path("purchase/",views.purchase,name="Purchase"),
     path('add-product/',views.AddProduct,name="Addproduct"),
-    path("sales/",views.sale,name="Sale")
+    path("sales/",views.sale,name="Sales"),
+    path("report/<str:product_id>/",views.report,name="Report")
 ]
