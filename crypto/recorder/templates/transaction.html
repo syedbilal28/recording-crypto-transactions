@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Transaction
+{% endblock %}
+
+{% block content %}
+<style>
         body {
           font-family: Arial;
           background-color: #101119;
@@ -110,7 +106,8 @@ div.content {
       
 }
 .r-1{
-    color: #00f5b0;
+    color: #1b1f2e;
+    text-decoration: none;
 }
 .form-control{
     background-color: #10131f;
@@ -148,56 +145,47 @@ td:last-child {
     border-bottom-right-radius: 10px; 
     border-top-right-radius: 10px; 
 }
+.table-container{
+  border:1px solid #1b1f2e;
+}
+.top-link{
+  color:#2f3650;
+  text-decoration: none;
+}
+.top-link:hover{
+  color: #00f5b0;
+  transition: 0.3s;
+}
+.active-link{
+  color: #00f5b0;
+}
+.option-select{
+  border-bottom: 3px solid #2f3650 ;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
 </style>
-    <title>Transaction</title>
-</head>
-<body>
-    <header>
-        <div class="row">
-            <div class="col-9">
-                <form class="searchbar" action="">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                  </form>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-        </div>
-       
-    </header>
-    <div class="sidebar">
-        <a href="purchases.html">Purchases</a><br>
-        <a  href="sales.html">Sales</a><br>
-        <a href="report.html">Reports</a><br>
-        <a href="gas-free.html">Gas free</a><br>
-        <a  class="active" href="transaction.html">Transaction</a>
-        <a href="suggestions.html">Suggestions</a><br>
-      <a href="add-suggestion.html">Add Suggestions</a><br>
-      <a href="admin.html">Admin</a><br>
-      <a href="email">Email</a>
-
-    </div><br>
-    <div class="container">
-       
-            <div class="form-wrapper">
-                <h3>Transaction</h3>
+    
+        <div class="table-container rounded">      
+            <div class="form-wrapper px-4 py-3">
+                <h3>Transactions</h3>
             </div>
        
-        <form action="" class="form-control">
-            <div class="form-wrapper">
-                <div class="d-flex">
+        
+            <div class="form-wrapper px-4 py-3 no-border">
+              <div class="data-bottom-wrapper">
+                <div class="d-flex option-select">
                     <div class="r-1">
-                        <a href="all">All</a>
+                        <a href="all" class="top-link active-link">All</a>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="r-1" >
+                        <a class="top-link" href="purchase">Purchases</a>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="r-1">
-                        <a href="purchase">Purchases</a>
-                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="r-1">
-                        <a href="sales">Sales</a>
+                        <a href="sales" class="top-link">Sales</a>
                     </div>
                 </div>
-                <hr>
+                <!-- <hr> -->
                 <table class="table">
                     <thead>
                       <tr>
@@ -208,49 +196,20 @@ td:last-child {
                       </tr>
                     </thead>
                     <tbody>
+                      {% for transaction in transactions %}
                       <tr class="tr-1 rounded">
                         
-                          <td >Bitcoin</td>
-                          <td >$6839.66</td>
-                          <td >$23000</td>
-                          <td >21442345</td>
+                          <td >{{ transaction.product }}</td>
+                          <td >{{ transaction.price }}</td>
+                          <td >{{ transaction.quantity }}</td>
+                          <td >{{ transaction.timestamp }}</td>
                         
                       </tr>
-                      <tr class="tr-1">
-                        <td>Etherium</td>
-                        <td>$6839.66</td>
-                        <td>$23000</td>
-                        <td>21442345</td>
-                      </tr>
-                      <tr class="tr-1">
-                        <td>Ripple</td>
-                        <td>$6839.66</td>
-                        <td>$23000</td>
-                        <td>21442345</td>
-                      </tr>
-                      <tr class="tr-1">
-                        <td>ChainLink</td>
-                        <td>$6839.66</td>
-                        <td>$23000</td>
-                        <td>21442345</td>
-                      </tr>
-                      <tr class="tr-1">
-                        <td>ChainLink</td>
-                        <td>$6839.66</td>
-                        <td>$23000</td>
-                        <td>21442345</td>
-                      </tr>
-                      <tr class="tr-1">
-                        <td>Ripple</td>
-                        <td>$6839.66</td>
-                        <td>$23000</td>
-                        <td>21442345</td>
-                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
-
+                </div>
             </div>
-        </form>
-    </div>
-</body>
-</html>
+          </div>
+    
+{% endblock %}

@@ -94,7 +94,9 @@ def report(request,product_id):
     transactions= Transaction.objects.filter(product=product)
     purchases= transactions.filter(Type="purchase")
     sales= transactions.filter(Type="sale")
-    
+    profit=[]  
+    # for i in sales:
+         
     return render(request,"report.html")
 
 def base(request):
@@ -128,3 +130,8 @@ def gasfee(request):
 
         context={"form":form,"average":avg,"overall":overall,"x":x_data,"y":y_data,"prev_1":prev_1,"prev_2":prev_2,"prev_3":prev_3,"year":year}
         return render(request,"gas-fee.html",context)
+
+def transactions(request):
+    transactions=Transaction.objects.all()
+    context={"transactions":transactions}
+    return render(request,"transaction.html",context)

@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/dd623901d8.js" crossorigin="anonymous"></script>
-   
-    <script src="/static/easy-pie-chart/dist/jquery.easypiechart.js/"></script>
-    <style>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Report
+{% endblock %}
+{% block content %}
+<style>
         
         body { 
            /* margin: 0;  */
@@ -137,58 +131,62 @@ div.content {
           margin-bottom: 5px;
           font-size: 14px;
         }
+        .main-container{
+          border: 1px solid #1b1f2e;
+        }
+        .fa-sort-up,.fa-sort-down{
+          font-size: 24px;
+        }
 </style>
-    <title>Reports</title>
-</head>
-<body>
-    <header>
-        <div class="row">
-            <div class="col-9">
-                <form class="searchbar" action="/action_page.php">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                  </form>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-        </div>
-       
-    </header>
-    <div class="sidebar">
-        <a href="purchases.html"><i class="fas fa-book"></i><br>Purchases</a><br>
-        <a  href="sales.html"><i class="fas fa-chart-line"></i><br>Sales</a><br>
-        <a class="active" href="report.html">Reports</a><br>
-        <a href="gas-fee.html">Gas fee</a><br>
-        <a href="transaction.html">Transaction</a>
-        <a href="suggestions.html">Suggestions</a><br>
-        <a href="add-suggestion.html">Add Suggestions</a><br>
-        <a href="admin.html">Admin</a><br>
-        <a href="email">Email</a>
-
-    </div>
-    <br>
-    <div class="container px-4 my-4">
-        <form action="" class="form-control p-4 form-top">
-            <div class="form-wrapper">
+    
+    
+    
+      <div class="main-container rounded">
+        <form action="" class="form-control p-4 px-5 form-top">
+            <div class="form-wrapper no-border">
                 <h3>Reports</h3>
             </div>
         </form>
         <form action="" class="form-control py-2 px-5 pt-3">
-            <div class="form-wrapper">
+            <div class="form-wrapper no-border">
                 <div class="row">
                     <div class="col">
                         <h2 id="heading">Etherium Profit</h2>
                     </div>
                     <div class="col-4">
-                      <h2>0.002343</h2>
+                      <div class="row">
+                        <div class="col-sm-5 p-0">
+                          <h2 class="d-inline">0.002343</h2>
+                        </div>
+                        <div class="col p-0">
+                          <div class="row">
+                            <i class="fas fa-sort-up"></i>
+                          </div>
+                          <div class="row">
+                            <i class="fas fa-sort-down"></i>
+                          </div>
+                        </div>
+                      
+                      <!-- <div class="d-flex flex-column">
+                        <div>
+                          
+                        </div>
+                        
+                        <div>
+                          <i class="fas fa-sort-down"></i>
+                        </div>
+                      </div> -->
+                      </div>
                     </div>
                 </div><hr>
                 <div>
                     <h4>Profit Over Time</h4>
                 </div>
                 <div>
-                    <img src="report graph.PNG" alt="">
+                    <!-- <img src="report graph.PNG" alt=""> -->
+                    <canvas id="population-chart"></canvas>
+                    
+
                 </div><br>
                 <div class="row">
                   <div class="col-6">
@@ -255,9 +253,33 @@ div.content {
         </div>  
                 </div>
         </form>
-       
-    </div>
+      </div>
+    
     <script>
+      var $populationChart = $("#population-chart");
+      var ctx = $populationChart[0].getContext("2d");
+      new Chart(ctx,
+      type:"line",
+      data:{
+        labels:{{ x|safe }},
+        datasets:[{
+          borderColor:'#00f5b0',
+          borderWidth:2,
+          fill:false,
+          data:{{ y|safe }},
+        }],
+        options: {
+          responsive: true,
+          title: {
+            display: false,
+            
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: true
+          },
+        }
+      })
       $(function() {
   $('.chart').easyPieChart({
     barColor: '#00f5b0',
@@ -283,5 +305,4 @@ div.content {
   });
 });
     </script>
-</body>
-</html>
+{% endblock %}

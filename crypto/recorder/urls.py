@@ -7,5 +7,6 @@ urlpatterns=[
     path('add-product/',views.AddProduct,name="Addproduct"),
     path("sales/",views.sale,name="Sales"),
     path("report/<str:product_id>/",views.report,name="Report"),
-    path("gas-fee/",views.gasfee,name="GasFee")
+    path("gas-fee/",views.gasfee,name="GasFee"),
+    path("transactions/",views.transactions,name="Transaction")
 ]
