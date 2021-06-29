@@ -2,7 +2,7 @@ from django.forms import ModelForm,Form
 from django import forms
 from django.contrib.auth.models import User
 from django.forms.widgets import NumberInput
-from .models import Product, Transaction
+from .models import Product, Transaction,GasFee
 class SignupForm(ModelForm):
     username=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"placeholder":"username","class":"form-control p-2"}))
     email=forms.CharField(max_length=50,widget=forms.EmailInput(attrs={"placeholder":"email","class":"form-control p-2"}))
@@ -35,13 +35,17 @@ class PurchaseForm(ModelForm):
 
 class SaleForm(ModelForm):
     note=forms.CharField(max_length=200,widget=forms.Textarea(attrs={"class":"get form-control quarter","col":"30","rows":"5"}))
-    price=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half"}))
-    quantity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control half"}))
-    timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half"}))
+    price=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control more-half extra-rounded"}))
+    quantity=forms.IntegerField(widget=forms.NumberInput(attrs={"class":"get form-control half extra-rounded"}))
+    timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half extra-rounded"}))
     Type=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"value":"sale"}))
     # product=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"class":"get form-control half"}))
-    percentage=forms.IntegerField(widget=NumberInput(attrs={"class":"get form-control more-half"}))
+    percentage=forms.IntegerField(widget=NumberInput(attrs={"class":"get form-control more-half extra-rounded"}))
     class Meta:
         model=Transaction
         fields="__all__"
 
+class GasFeeForm(ModelForm):
+    class Meta:
+        model=GasFee
+        fields="__all__"

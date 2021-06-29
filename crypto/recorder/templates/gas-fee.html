@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Gas Fee
+{% endblock %}
+{% block content %}
+<style>
         body {
           font-family: Arial;
           background-color: #101119;
@@ -115,64 +113,76 @@ div.content {
   }
   .get{
     opacity: 0.4;
+    border: none;
+    height: 17%;
+    min-width: 210px;
   }
   .btn-1{
     width: 20%;
+    height: 13%;
     background-color:#00f5b0 ;
     border: none;
-    border-radius: 8px;
+    border-radius: 0.75rem;
     text-align: center;
+    font-weight: 600;
   }
+  .border{
+    border: 1px solid #1b1f2e !important;
+  }
+  .border-partial{
+    border-radius: 0px 0px 0.25rem 0.25rem !important;
+  }
+  hr{
+    margin: 0px;
+    margin-bottom: 5px;
+  }
+  .extra-rounded{
+    border-radius: 0.75rem;
+  }
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {  
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.green{
+  color: #00f5b0;
+}
+.fa-minus{
+  color: #191f2d;
+}
 </style>
-    <title>Gas Fee</title>
-</head>
-<body>
-    <header>
-        <div class="row">
-            <div class="col-9">
-                <form class="searchbar" action="">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                  </form>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-        </div>
-       
-    </header>
-    <div class="sidebar">
-        <a href="purchases.html">Purchases</a><br><br>
-        <a  href="sales.html">Sales</a><br><br>
-        <a href="report.html">Reports</a><br><br>
-        <a class="active" href="gas-free.html">Gas free</a><br><br>
-        <a href="transaction.html">Transaction</a>
-
-    </div><br>
-
-    <div class="container">
-        <form action="" class="form-control">
-            <div class="form-wrapper">
-                <h3>Gas Fee</h3>
+    
+    
+        <form action="" class="form-control border">
+            <div class="form-wrapper no-border px-4 py-2">
+                <h2>Gas Fee</h2>
             </div>
         </form>
-        <form action="" class="form-control">
-            <div    class="form-wrapper">
+        <form action="{% url 'GasFee' %}" method="POST" class="form-control border border-partial p-4">
+          {% csrf_token %}
+            <div    class="form-wrapper no-border">
                 <div class="row">
                     <div class="col">
-                        <h4>Over all Gas Fee</h4>
+                        <h3>Over all Gas Fee</h3>
                     </div>
                     <div class="col p-1">
-                        <p><strong>0.002323</strong></p>
+                        <h4><strong>{{ overall }}</strong> <i class="fas fa-tachometer-alt"></i></h4>
+                        
                         <!-- <p>value to be added here from backend</p> -->
                     </div>
                 </div><hr>
                 <div class="row">
                     <div class="col">
-                        <h4>Average Daily Gas Fee</h4>
+                        <h3>Average Daily Gas Fee</h3>
                     </div>
                     <div class="col p-1">
-                        <p><strong>0.008786</strong></p>
+                        <h4><strong>{{ average }}</strong>  <i class="fas fa-tachometer-alt"></i></h4>
+                        
                         <!-- <p>value to be added here from backend</p> -->
                     </div>
                 </div><br>
@@ -180,23 +190,111 @@ div.content {
                     <div class="col">
                         <h5>Add New Gas Fee</h5>
                         <br>
-                        <input class="get" type="text" name="product name" id="pname">
+                        <!-- <input class="get extra-rounded p-2" type="text" name="product name" id="pname" > -->
+                        {{ form.currency }}
                         <br><br>
-                        <input class="get" type="date" name="adding-date" id="date" style="padding-left: 37px;">
+                        <!-- <input class="get extra-rounded p-2" placeholder="Date" type="date" name="adding-date" id="date"  > -->
+                        {{ form.date }}
                         <br><br>
-                        <input class="get" type="number" name="gas fee" id="fee">
+                        <!-- <input class="get extra-rounded p-2" placeholder="Value" type="number" name="gas fee" id="fee" > -->
+                        {{ form.fee }}
                         <br><br>
-                        <form  action="add gass fee">
-                          <input class="btn-1" type="submit" value="Add">
-                        </form>
+                        
+                          <input class="btn-1 mb-5" type="submit" value="Add">
+                        
                     </div>
                     <div class="col">
-                        <img src="gas fee graph.PNG" alt="">
+                      <div class="row ">
+                        <div class="col">
+                          <div class="row">
+                          <div class="col-sm-1">
+                            <i class="fas fa-minus"></i>
+                          </div>
+                          <div class="col green">
+                            <p class="d-inline px-1">{{ prev_3}}</p>
+                            <p >{{ year }}</p>
+                          </div>
+                        </div>
+                        </div>
+                        <div class="col">
+                          <div class="row ">
+                            <div class="col-sm-1">
+                              <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="col green">
+                              <p class="d-inline px-1">{{ prev_2}}</p>
+                              <p >{{ year }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="row">
+                            <div class="col-sm-1">
+                              <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="col green">
+                              <p class="d-inline px-1">{{ prev_1}}</p>
+                              <p >{{ year }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                        <!-- <img src="data:image/png;base64,{{ graphic|safe }}" alt=""> -->
+                        <div class="row">
+                        <canvas id="population-chart" data-url="{% url 'GasFee' %}"></canvas>
+                      </div>
                     </div>
                 </div>
             </div>
 
         </form>
-    </div>
-</body>
-</html>
+      <script>
+        document.querySelector("#id_currency").className="get extra-rounded p-2"
+        document.querySelector("#id_date").className="get extra-rounded p-2"
+        document.querySelector("#id_date").type="date"
+        document.querySelector("#id_fee").className="get extra-rounded p-2"
+        document.querySelector("#id_fee").type="number"
+        var $populationChart = $("#population-chart");
+        var ctx = $populationChart[0].getContext("2d");
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: {{ x|safe }},
+              datasets: [{
+                label: 'Gas Fee',
+                backgroundColor: '#00f5b0',
+                data: {{ y|safe }}
+              }]          
+            },
+            options: {
+              legend:{
+                display:false,
+              },
+              responsive: true,
+              scales: {
+                xAxes: [{
+                barPercentage: 0.1,
+                gridLines: {
+                  display: false,
+                  },
+              }],
+                yAxes:[{
+                  gridLines: {
+                    display: false,
+                  },
+                  ticks: {
+                      display: false
+                  }
+                }]
+              },
+              // legend: {
+              //   position: 'top',
+              // },
+              title: {
+                display: false,
+                text: 'Population Bar Chart'
+              }
+            }
+          });
+      </script>
+{% endblock %}

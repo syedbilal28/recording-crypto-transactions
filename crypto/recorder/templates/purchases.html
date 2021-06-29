@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Purchases
+    {% endblock %}
+{% block content %}
     <style>
         body { 
            /* margin: 0;  */
            font-family: "Lato", sans-serif;
            background-color: #101119;
+           overflow-x: hidden;
          } 
         .container{
             margin-left: 150px;
@@ -150,31 +150,12 @@ form.searchbar input[type=text] {
           display: none;
         }
     </style>        
-    <title>Purchases</title>
-</head>
-<body>
-     <header>
-      <div class="row">
-        <div class="col-9">
-            <form class="searchbar" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
-              </form>
-        </div>
-        <div class="col-1"></div>
-        <div class="col-1"></div>
-        <div class="col-1"></div>
-    </div>
-    </header>
-    <div class="sidebar">
-        <a class="active" href="#purchase.html">Purchases</a><br><br>
-        <a href="sales.html">Sales</a><br><br>
-        <a href="#report">Reports</a><br><br>
-        <a href="#gas-fee">Gas fee</a><br><br>
-        <a href="#transaction">Transaction</a>
-    </div>
-    <br>
-    <div class="container px-4">
+    <!-- <title>Purchases</title> -->
+    
+
+     
+    
+    
         <div class="form-wrapper m-5 rounded ">
             <form action="" class="form-control px-4 py-3 form-top">
                 <div class="row">
@@ -195,10 +176,7 @@ form.searchbar input[type=text] {
               {{ form.Type }}
               <div class="form-wrapper no-border py-4">
                 <label for="pname">Product name</label><br>
-                <!-- <select class="get form-control half" name="Product name" id="pname">
-                  <option value="kryptonite">kryptonite</option>
-                  <option value="etherium">Etherium</option>
-                  <option value="dodge coin">Dodge Coin</option> -->
+                
                   {{ form.product }}
                 </select><br>
                 
@@ -234,11 +212,11 @@ form.searchbar input[type=text] {
               </div>
             </form>
         </div>
-    </div>
+    
     <script>
+       $("#purchases").addClass("active");
       document.querySelector("#id_timestamp").type="date"
       document.querySelector("#id_product").className="get form-control half"
       
     </script>
-</body>
-</html>
+{% endblock %}

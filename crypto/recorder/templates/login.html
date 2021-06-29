@@ -51,6 +51,7 @@
         .container{
             min-height: 100vh;
         }
+        
         </style>
     <title>Login</title>
 </head>
@@ -82,7 +83,7 @@
                     <div >
                         <input type="submit" class="form-control btn-2 py-3" value="Login to continue">
                     </div><br>
-                        <p class="p-3">Don't have an account?<a href="">Sign up</a></p>
+                        <p class="p-3">Don't have an account?<a href="{% url 'Signup' %}">Sign up</a></p>
                     </form>    
                 </div>
             </div>

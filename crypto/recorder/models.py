@@ -95,7 +95,7 @@ class Transaction(models.Model):
     timestamp=models.DateField(null=True)
     note= models.CharField(max_length=2000,null=True)
 
-
-
-
-
+class GasFee(models.Model):
+    currency=models.CharField(max_length=100,null=True,blank=True)
+    date=models.DateField()
+    fee=models.FloatField()
