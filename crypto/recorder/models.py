@@ -47,6 +47,8 @@ def upload_product(instance,filename):
         os.mkdir(directory_profile)
     return f"Products/{instance.name}/{filename}"
 
+
+
 class Post(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     content= models.CharField(max_length=1000)
@@ -87,6 +89,7 @@ class Product(models.Model):
         return self.name
 
 class Transaction(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     price=models.IntegerField()
     Type= models.CharField(max_length=10)
@@ -94,8 +97,19 @@ class Transaction(models.Model):
     percentage=models.FloatField(null=True,blank=True)
     timestamp=models.DateField(null=True)
     note= models.CharField(max_length=2000,null=True)
+    profit= models.FloatField(null=True,blank=True)
 
 class GasFee(models.Model):
     currency=models.CharField(max_length=100,null=True,blank=True)
     date=models.DateField()
     fee=models.FloatField()
+
+class Inventory(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    available_quantity=models.IntegerField(default=0)
+
+
+
+
+    

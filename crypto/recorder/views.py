@@ -2,8 +2,9 @@ from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from .forms import GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
 from django.contrib.auth import login, logout,authenticate
-from .models import Transaction,Product,GasFee
+from .models import Transaction,Product,GasFee,Inventory
 from datetime import datetime,date
+import copy
 
 import calendar
 
@@ -44,6 +45,7 @@ def purchase(request):
         data=request.POST
         print(data)
         transaction=Transaction.objects.create(
+            user=request.user,
             product=Product.objects.get(pk=int(data['product'])),
             price=int(data['price']),
             Type=data['Type'],
@@ -51,6 +53,15 @@ def purchase(request):
             timestamp=datetime.strptime(data['timestamp'],'%Y-%m-%d').date(),
             note=data['note']
         )
+        try:
+            inventory= Inventory.objects.get(user=request.user,product=transaction.product)
+        except:
+            inventory= Inventory.objects.create(
+                user=request.user,
+                product=transaction.product
+            )
+        inventory.available_quantity+=int(data['quantity'])
+        inventory.save()
         return redirect("Purchase")
         # print(request.POST)
         # print(form.is_valid())
@@ -67,6 +78,7 @@ def AddProduct(request):
         form=ProductForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
+
     else:
         form=ProductForm()
         context={"form":form}
@@ -76,14 +88,51 @@ def sale(request):
         form=SaleForm(request.POST)
         data=request.POST
         print(data)
+        try:
+            inventory= Inventory.objects.get(user=request.user,product=Product.objects.get(pk=int(data['product'])))
+        except:
+            return JsonResponse({"message":"You do not have this product available"},status=400)
+        
+        
+        if inventory.available_quantity < int(data['quantity']):
+            return JsonResponse({"message":"You do not have enough resources"},status=400)
+        
         transaction=Transaction.objects.create(
+            user=request.user,
             product=Product.objects.get(pk=int(data['product'])),
             price=int(data['price']),
             Type=data['Type'],
             quantity=int(data['quantity']),
-            
-            
+            timestamp=date.today(),
+            percentage= float(data["percentage"])
         )
+        previous_transactions= Transaction.objects.filter(user=transaction.user,Type="purchase")
+        print(previous_transactions)
+        available_units= Inventory.objects.filter(user=transaction.user,product=transaction.product)[0].available_quantity
+        print(available_units)
+        num=0
+        available_products=[]
+        for i in previous_transactions:
+            if num < available_units:
+                num+=i.quantity
+                available_products.append(copy.deepcopy(i))
+                if num >= available_units:
+                    available_products[-1].quantity-=(num-available_units)
+                    cost=CalculateCost(available_products,transaction.quantity) 
+                    print("calculating profit")
+                    profit=transaction.price-cost
+
+                    transaction.profit= profit
+                    print("Put profit")
+                    transaction.save()
+            else:
+                break
+
+        inventory.available_quantity-=int(data['quantity'])
+        inventory.save()
+        return HttpResponse("Hello Worls")
+        # try:
+        #     inventory=Inventory.objects.get(user=request.user,product=)
     else:
         form= SaleForm()
         context={"form":form}
@@ -91,13 +140,12 @@ def sale(request):
 
 def report(request,product_id):
     product= Product.objects.get(pk=int(product_id))
-    transactions= Transaction.objects.filter(product=product)
-    purchases= transactions.filter(Type="purchase")
-    sales= transactions.filter(Type="sale")
-    profit=[]  
+    transactions= Transaction.objects.filter(user=request.user,product=product,Type="sale")  
     # for i in sales:
-         
-    return render(request,"report.html")
+    x_data=[i.timestamp.strftime("%d-%m-%Y") for i in transactions]
+    y_data=[i.profit for i in transactions]
+    context={"x":x_data,"y":y_data}
+    return render(request,"report.html",context)
 
 def base(request):
     return render(request,"base.html")
@@ -135,3 +183,17 @@ def transactions(request):
     transactions=Transaction.objects.all()
     context={"transactions":transactions}
     return render(request,"transaction.html",context)
+
+def CalculateCost(available_products,quantity):
+    cost=0
+    count=0
+    for i in available_products:
+        if count< quantity:
+            cost+=i.price
+            count+=i.quantity
+        if count> quantity:
+            cost_per_piece= i.quantity/i.price 
+            cost-= ((count-quantity)*cost_per_piece)
+            
+            break
+    return cost

@@ -137,6 +137,9 @@ div.content {
         .fa-sort-up,.fa-sort-down{
           font-size: 24px;
         }
+        #population-chart{
+          background:#10152c;
+        }
 </style>
     
     
@@ -184,7 +187,7 @@ div.content {
                 </div>
                 <div>
                     <!-- <img src="report graph.PNG" alt=""> -->
-                    <canvas id="population-chart"></canvas>
+                    <canvas id="population-chart" class="p-4"></canvas>
                     
 
                 </div><br>
@@ -258,28 +261,31 @@ div.content {
     <script>
       var $populationChart = $("#population-chart");
       var ctx = $populationChart[0].getContext("2d");
-      new Chart(ctx,
-      type:"line",
-      data:{
-        labels:{{ x|safe }},
-        datasets:[{
-          borderColor:'#00f5b0',
-          borderWidth:2,
-          fill:false,
-          data:{{ y|safe }},
-        }],
-        options: {
-          responsive: true,
-          title: {
-            display: false,
-            
-          },
-          tooltips: {
-            mode: 'index',
-            intersect: true
-          },
+      var speedData = {
+      labels: {{ x|safe }},
+      datasets: [{
+        label: "Profit",
+        fill:false,
+        borderColor:"#00f5b0",
+        data: {{ y|safe }},
+      }]
+    };
+    var chartOptions = {
+      legend: {
+        display: false,
+        position: 'top',
+        labels: {
+          boxWidth: 80,
+          fontColor: 'black'
         }
-      })
+      }
+    };
+      var lineChart = new Chart(ctx, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+    });
+    
       $(function() {
   $('.chart').easyPieChart({
     barColor: '#00f5b0',
