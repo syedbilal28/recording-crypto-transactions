@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block content %}
+<style>
+    .flex-item{
+        background-color: #212234;
+        border-radius: 0.75rem;
+        color: white;
+    }
+    .chat{
+        background-color: #24232c;
+        border-radius: 0.75rem;
+        min-width: 280px;
+    }
+    .small{
+        font-size: 16px !important;
+    }
+    .extra-small{
+        font-size: 12px;
+    }
+    .lighter{
+        font-weight: 300;
+        font-size: 14px;
+    }
+    .user,.activity{
+        min-width: 280px;
+    }
+    .menu{
+        font-size: 14px;
+        color: #54555f;
+    }
+    .seen{
+        color: #07c493;
+    }
+    .vl-holder{
+        height:90%;
+        width: 10px;
+        border-right: 1px solid #54555f;
+    }
+    .white{
+        color: white;
+    }
+</style>
+<div class="row">
+    <h3 class="white">User Profile</h3>
+    <p class="white">Welcome to admin Dashboard</p>
+</div>
+<div class="d-flex">
+    <div class="flex-item p-4 m-3">
+        <div class="row top-row">
+            <div class="col-10">
+                <p>Latest Message</p>
+            </div>
+            <div class="col-2">
+                <i class="fas fa-plus small seen"></i>
+            </div>
+        </div>
+        <div class="body-bottom">
+            <div class="chat-holder">
+                <div class="chat row px-2 py-1">
+                    <div class="col-2">
+                        <img src="" alt="" class="profile-img">
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <p>Chloe Jess</p>
+                        </div>
+                        <div class="row">
+                            <p class="message lighter">I have done it</p>
+                        </div>
+                    </div>
+                    <div class="col-2 p-0">
+                        <div class="row">
+                            <p class="extra-small">seen ago</p>
+                        </div>
+                        <div class="row">
+                            <i class="fas fa-check-double small"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="flex-item p-4 m-3">
+        <div class="row top-row">
+            <div class="col-10">
+                <p>Users(45)</p>
+            </div>
+            <div class="col-2">
+                <i class="fas fa-plus small seen"></i>
+            </div>
+        </div>
+        <div class="body-bottom">
+            <div class="chat-holder">
+                <div class="user row px-2 py-1">
+                    <div class="col-2">
+                        <img src="" alt="" class="profile-img">
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <p>Andy Stevavnous</p>
+                        </div>
+                        <div class="row">
+                            <p class="desc lighter">Representative</p>
+                        </div>
+                    </div>
+                    <div class="col-2 p-0 d-flex align-items-center justify-content-center">
+                        <div class="row">
+                            <i class="fas fa-ellipsis-v menu"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="flex-item p-4 m-3">
+        <div class="row top-row">
+            
+                <p>Recent Activity</p>
+            
+        </div>
+        <div class="body-bottom">
+            <div class="activity-holder">
+                <div class="activity row px-2 py-1">
+                    <div class="col-2">
+                        <i class="fas fa-dot-circle seen small"></i>
+                        <div class="vl-holder">
+
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <div class="row">
+                            <p class="timestamp">12 January 2012</p>
+                        </div>
+                        <div class="row">
+                            <p class="activity lighter">A dummy activity was created by a dummy user which initiated a dumm incident to perform a dummy action</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

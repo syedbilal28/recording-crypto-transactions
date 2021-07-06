@@ -197,3 +197,6 @@ def CalculateCost(available_products,quantity):
             
             break
     return cost
+
+def admin(request):
+    return render(request,"admin_home.html")
