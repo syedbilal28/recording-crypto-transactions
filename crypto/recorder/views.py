@@ -200,3 +200,6 @@ def CalculateCost(available_products,quantity):
 
 def admin(request):
     return render(request,"admin_home.html")
+
+def email(request):
+    return render(request,"admin_email.html")

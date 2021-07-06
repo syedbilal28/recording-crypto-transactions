@@ -1,0 +1,190 @@
+{% extends "admin_base.html" %}
+{% load static %}
+{% block title %}
+Email
+{% endblock %}
+
+{% block content %}
+<style>
+#chat-menu{
+    border-radius:0.75rem;
+    background-color:#24232c;
+    color:#a3a3a3;
+    margin:auto;
+    
+}
+.chat-option{
+    /* display:inline; */
+    /* margin:auto; */
+    margin:0.5rem 0px;
+    font-size:14px;
+}
+.new-message-btn{
+    border-radius:1rem;
+    background-color:#00f5b0;
+    color:white;
+    border:none;
+    width:100%;
+    font-size:14px !important;
+}
+.small-plus{
+    font-size:14px !important;
+}
+.float-right{
+    float:right;
+}
+.purp{
+    color:#8947b0;
+}
+.green{
+    color:#00a389;
+}
+.orange{
+    color:#ffbb54;
+}
+.blue{
+    color:#51b7e4;
+}
+</style>
+ <div class="row top-row">
+    <h2>Email</h2>
+    <p>Welcome to Admin Dashboard </p>
+ </div>
+ <div clas="body-bottom row my-2">
+    <div class="col-3 d-flex justify-content-center">
+        <div id="chat-menu" class="d-flex flex-column justify-content-between p-3 px-4">
+        
+            <div class="chat-option">
+                <button class="btn btn-primary new-message-btn py-2"><i class="fas fa-plus small-plus"></i> New Message</button>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <div class="col-9">
+                        <p class="px-2">Inbox</p>
+                    </div>
+                    <div class="col-1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="col-9">
+                        <p class="px-2">Sent Emails</p>
+                    </div>
+                    <div class="col-1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="col-9">
+                        <p class="px-2">Favourite</p>
+                    </div>
+                    <div class="col-1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-sticky-note"></i>
+                    </div>
+                    <div class="col-9">
+                        <p class="px-2">Draft</p>
+                    </div>
+                    <div class="col-1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="far fa-trash-alt"></i>
+                    </div>
+                    <div class="col-9">
+                        <p class="px-2">Deleted</p>
+                    </div>
+                    <div class="col-1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Labels</p>
+                </div>
+                <div class="col text-right"><i class="fas fa-ellipsis-h float-right"></i></div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-tag purp"></i>
+                    </div>
+                    <div class="col-10">
+                        <p class="px-2">Work in Progress</p>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-tag green"></i>
+                    </div>
+                    <div class="col-10">
+                        <p class="px-2">Read Later</p>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-tag orange"></i>
+                    </div>
+                    <div class="col-10">
+                        <p class="px-2">Importants</p>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="chat-option">
+                <div class="row opt-normal">
+                    <div class="col-2">
+                        <i class="fas fa-tag blue"></i>
+                    </div>
+                    <div class="col-10">
+                        <p class="px-2">Offers</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-6">
+        <div class="search-bar-msg">
+            <div class="col-8">
+                <input>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+ </div>
+{% endblock %}
