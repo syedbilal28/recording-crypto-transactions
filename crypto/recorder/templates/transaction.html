@@ -155,6 +155,7 @@ td:last-child {
 .top-link:hover{
   color: #00f5b0;
   transition: 0.3s;
+  cursor: pointer;
 }
 .active-link{
   color: #00f5b0;
@@ -207,13 +208,13 @@ td{
               <div class="data-bottom-wrapper">
                 <div class="d-flex option-select">
                     <div class="r-1">
-                        <a href="all" class="top-link active-link">All</a>
+                        <a  class="top-link active-link" id="all">All</a>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="r-1" >
-                        <a class="top-link" href="purchase">Purchases</a>
+                        <a class="top-link"  id="purchase">Purchases</a>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="r-1">
-                        <a href="sales" class="top-link">Sales</a>
+                        <a  class="top-link" id="sale">Sales</a>
                     </div>
                 </div>
                 <!-- <hr> -->
@@ -308,6 +309,40 @@ td{
           }
         })
       })
+      $(".top-link").on("click",function(){
+        var filter=this.id
+        
+        Transaction(filter)
 
+      })
+      function Transaction(filter){
+        var links=$(".top-link")
+        $(links).each(function(){
+          this.className="top-link"
+          if(this.id == filter){
+            this.className="top-link active-link"
+          }
+        })
+        $.ajax({
+          url:`/transactions-filter/${filter}/`,
+          method:"get",
+          success:function(data){
+            var table_body=document.querySelector("tbody")
+            table_body.innerHTML=''
+            $(data.transactions).each(function(){
+              temp_data_to_add=`<tr class="tr-1"  data-id="${this.id}">
+                        
+                        <td class="td-1"><img src="${this.product.image}" class="transaction-img px-2" alt="">${this.product.name}</td>
+                        <td class="td-2">${this.price}</td>
+                        <td class="td-2">${this.quantity}</td>
+                        <td class="td-3">${this.timestamp}</td>
+                        <td class="not-include"><i class="fas fa-ellipsis-h small gray edit-opt"></i></td>  
+                    </tr>`
+              table_body.innerHTML+=temp_data_to_add
+
+            })
+          }
+        })
+      }
     </script>
 {% endblock %}

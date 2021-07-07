@@ -185,7 +185,7 @@ def gasfee(request):
         return render(request,"gas-fee.html",context)
 
 def transactions(request):
-    transactions=Transaction.objects.all()
+    transactions=Transaction.objects.filter(user=request.user)
     context={"transactions":transactions}
     return render(request,"transaction.html",context)
 
@@ -229,12 +229,13 @@ def EditTransaction(request):
     return HttpResponse(status=200)
 
 def TransactionsFilter(request,filter):
-    if filter:
+    if filter =="purchase" or filter=="sale":
         transactions=Transaction.objects.filter(Type=filter,user=request.user)
     else:
         transactions=Transaction.objects.filter(user=request.user)
+    
     transactions=TransactionSerializer(transactions,many=True).data
-    return JsonResponse(transactions,status=200)
+    return JsonResponse({"transactions":transactions},status=200)
 def admin(request):
     return render(request,"admin_home.html")
 

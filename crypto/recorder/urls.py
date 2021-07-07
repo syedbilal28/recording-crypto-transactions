@@ -12,5 +12,6 @@ urlpatterns=[
     path("administrator/",views.admin,name="Admin"),
     path("email/",views.email,name="Email"),
     path("transaction/<str:transaction_id>/",views.TransactionData,name="TransactionData"),
-    path("edit-transaction/",views.EditTransaction,name="EditTransaction")
+    path("edit-transaction/",views.EditTransaction,name="EditTransaction"),
+    path("transactions-filter/<str:filter>/",views.TransactionsFilter,name="TransactionFilter")
 ]
