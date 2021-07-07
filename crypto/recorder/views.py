@@ -3,7 +3,7 @@ from django.http.response import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from .forms import GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
 from django.contrib.auth import login, logout,authenticate
-# from .authentication_email.
+from .calculator import ProfitCalculator
 from .models import Transaction,Product,GasFee,Inventory
 from datetime import datetime,date
 import copy
@@ -83,7 +83,9 @@ def AddProduct(request):
         form=ProductForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
-
+            
+        return redirect("Purchase")
+        
     else:
         form=ProductForm()
         context={"form":form}
@@ -96,11 +98,17 @@ def sale(request):
         try:
             inventory= Inventory.objects.get(user=request.user,product=Product.objects.get(pk=int(data['product'])))
         except:
-            return JsonResponse({"message":"You do not have this product available"},status=400)
+            form= SaleForm()
+            context={"form":form,"message":"You do not have this product available"}
+            return render(request,"sales.html",context)
+            # return JsonResponse({"message":"You do not have this product available"},status=400)
         
         
         if inventory.available_quantity < int(data['quantity']):
-            return JsonResponse({"message":"You do not have enough resources"},status=400)
+            # return JsonResponse({"message":"You do not have enough resources"},status=400)
+            form= SaleForm()
+            context={"form":form,"message":"You do not have enough resources"}
+            return render(request,"sales.html",context)
         
         transaction=Transaction.objects.create(
             user=request.user,
@@ -135,7 +143,8 @@ def sale(request):
 
         inventory.available_quantity-=int(data['quantity'])
         inventory.save()
-        return HttpResponse("Hello Worls")
+        # return HttpResponse("Hello Worls")
+        return redirect("Purchase")
         # try:
         #     inventory=Inventory.objects.get(user=request.user,product=)
     else:
@@ -145,11 +154,26 @@ def sale(request):
 
 def report(request,product_id):
     product= Product.objects.get(pk=int(product_id))
-    transactions= Transaction.objects.filter(user=request.user,product=product,Type="sale")  
+    transactions_sp= Transaction.objects.filter(user=request.user,product=product)  
+    profit=ProfitCalculator(transactions_sp)
+    transactions=transactions_sp.filter(Type="sale")
+    overall_profit=round(((profit[0].sales-profit[0].purchase)/profit[0].purchase)*100,3)
+    all_transactions= Transaction.objects.filter(user=request.user)
+    profits=ProfitCalculator(all_transactions)
+    print(profits)
+    transaction_with_profits=[]
+    for i in profits:
+        temp=((i.sales-i.purchase)/i.purchase)*100
+        if temp <0:
+            temp=0
+        transaction_with_profits.append(temp)
+        # transaction_with_profits[i.name]= [i.purchase,i.sales] 
+    profits=sorted(transaction_with_profits,reverse=True)
+    profits=profits[0:4]
     # for i in sales:
     x_data=[i.timestamp.strftime("%d-%m-%Y") for i in transactions]
     y_data=[i.profit for i in transactions]
-    context={"x":x_data,"y":y_data}
+    context={"x":x_data,"y":y_data,"product":product,"tr_profits":profits,"ov_profit":overall_profit}
     return render(request,"report.html",context)
 
 def base(request):
