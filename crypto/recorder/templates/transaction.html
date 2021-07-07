@@ -121,7 +121,7 @@ div.content {
     width: 75%;
 }
 .tr-1{
-    background-color: #5a5d6c;
+   
     border-radius: 1rem;
     border: none;
     border-style: none !important;
@@ -164,6 +164,37 @@ td:last-child {
   padding-bottom: 1rem;
   padding-left: 1rem;
 }
+.transaction-img{
+  max-width: 50px;
+  border-radius: 50%;
+}
+td{
+  font-weight: 550;
+   
+  font-size: 15px;
+  color: #d9d9d9;
+}
+.not-include{
+  background-color: #101119 !important;
+  /* padding-left: 5rem; */
+
+}
+.td-1{
+  border-radius: 0.75rem 0px 0px 0.75rem;
+}
+.td-3{
+  border-radius: 0px 0.75rem 0.75rem 0px;
+}
+.td-1,.td-2,.td-3{
+  background-color: #5a5d6c !important;
+}
+.small{
+  font-size: 16px !important;
+}
+.edit-opt:hover{
+  cursor: pointer;
+  color: white;
+}
 </style>
     
         <div class="table-container rounded">      
@@ -193,23 +224,90 @@ td:last-child {
                         <th scope="col">Price</th>
                         <th scope="col">Collection</th>
                         <th scope="col">Data</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for transaction in transactions %}
-                      <tr class="tr-1 rounded">
+                      <tr class="tr-1"  data-id="{{ transaction.pk }}">
                         
-                          <td >{{ transaction.product }}</td>
-                          <td >{{ transaction.price }}</td>
-                          <td >{{ transaction.quantity }}</td>
-                          <td >{{ transaction.timestamp }}</td>
-                        
+                          <td class="td-1"><img src="{{ transaction.product.image.url }}" class="transaction-img px-2" alt="">{{ transaction.product }}</td>
+                          <td class="td-2">{{ transaction.price }}</td>
+                          <td class="td-2">{{ transaction.quantity }}</td>
+                          <td class="td-3">{{ transaction.timestamp }}</td>
+                          <td class="not-include"><i class="fas fa-ellipsis-h small gray edit-opt"></i></td>  
                       </tr>
+                      
                       {% endfor %}
                     </tbody>
                   </table>
                 </div>
             </div>
           </div>
-    
+    <script>
+      $(".edit-opt").on("click",function(){
+        
+        var transaction_id= this.parentElement.parentElement.dataset.id
+        $.ajax({
+          url:`/transaction/${transaction_id}/`,
+          method:"get",
+          success:function(data){
+            console.log(data)
+            var transaction_id_modal=$("#transaction-id")
+            transaction_id_modal[0].value=data.transaction.id
+            var transaction_product_modal=$("#product-select")[0]
+            
+            $(data.products).each(function(){
+              console.log(this)
+              var temp_opt=`<option value="${this.id}">${this.name}</option>`
+              if(data.transaction.product.id == this.id){
+                temp_opt=`<option value="${this.id}" selected>${this.name}</option>`
+              }
+              transaction_product_modal.innerHTML+=temp_opt
+            })
+            
+            var transaction_price_modal=$("#transaction-price")[0]
+            transaction_price_modal.value= data.transaction.price
+
+            var transaction_quantity_modal=$("#transaction-quantity")[0]
+            transaction_quantity_modal.value= data.transaction.quantity
+
+            var transaction_date_modal=$("#transaction-date")[0]
+            transaction_date_modal.value= data.transaction.timestamp
+
+            $("#transaction-edit-modal").modal("toggle")
+          }
+        })
+      })
+      $(".save-edit").on("click",function(){
+        
+        // var transaction_id= this.parentElement.parentElement.dataset.id
+        var form_data= new FormData($(".transaction-edit-form")[0])
+        
+        $.ajax({
+          url:`/edit-transaction/`,
+          method:"post",
+          data:form_data,
+          processData:false,
+          contentType:false,
+          success:function(data){
+            // console.log(data)
+            console.log(data.transaction)
+            var transaction_row = $(`.tr-1[data-id="${data.transaction.id}"]`)
+            var children=transaction_row[0].childNodes
+            console.log(children)
+            children[1].innerHTML=`<img src="${data.transaction.product.image}" class="transaction-img px-2" alt="">${data.transaction.product.name}`
+            children[3].innerHTML=data.transaction.price
+            children[5].innerHTML=data.transaction.quantity
+            children[7].innerHTML=data.transaction.timestamp
+
+             $("#transaction-edit-modal").modal("toggle")
+              
+            
+            
+          }
+        })
+      })
+
+    </script>
 {% endblock %}

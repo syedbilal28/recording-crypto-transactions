@@ -1,11 +1,13 @@
-from django.http.response import HttpResponse
+
+from django.http.response import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from .forms import GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
 from django.contrib.auth import login, logout,authenticate
+# from .authentication_email.
 from .models import Transaction,Product,GasFee,Inventory
 from datetime import datetime,date
 import copy
-
+from .serializers import TransactionSerializer,ProductSerializer
 import calendar
 
 # Create your views here.
@@ -26,8 +28,11 @@ def Login(request):
         form= LoginForm(request.POST)
         if form.is_valid():
             username=form.cleaned_data["username"]
+            print(username)
             password=form.cleaned_data["password"]
             user=authenticate(request,username=username,password=password)
+            # if not user:
+            #     user=authenticate(request,email=username,password=password)
             if user:
                 login(request,user)
                 return redirect("Purchase")
@@ -198,6 +203,38 @@ def CalculateCost(available_products,quantity):
             break
     return cost
 
+def TransactionData(request,transaction_id):
+    transaction=Transaction.objects.get(pk=int(transaction_id))
+    transaction=TransactionSerializer(transaction).data
+    products= Product.objects.all()
+    products=ProductSerializer(products,many=True).data
+    return JsonResponse({"transaction":transaction,"products":products},status=200)
+def EditTransaction(request):
+    print(request.POST)
+    if request.method=="POST":
+        pk=request.POST.get("pk")
+        product=request.POST.get("product") 
+        product= Product.objects.get(pk=int(product))
+        price=int(request.POST.get("price"))
+        quantity=int(request.POST.get("quantity"))
+        date=datetime.strptime(request.POST.get("date"),"%Y-%m-%d").date()
+        transaction= Transaction.objects.get(pk=int(pk))
+        transaction.product=product
+        transaction.price=price
+        transaction.quantity=quantity
+        transaction.timestamp=date
+        transaction.save()
+        transaction=TransactionSerializer(transaction).data
+        return JsonResponse({"transaction":transaction},status=200)
+    return HttpResponse(status=200)
+
+def TransactionsFilter(request,filter):
+    if filter:
+        transactions=Transaction.objects.filter(Type=filter,user=request.user)
+    else:
+        transactions=Transaction.objects.filter(user=request.user)
+    transactions=TransactionSerializer(transactions,many=True).data
+    return JsonResponse(transactions,status=200)
 def admin(request):
     return render(request,"admin_home.html")
 
