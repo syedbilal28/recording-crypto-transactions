@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Report
+{% endblock %}
+{% block content %}
+<style>
+        
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+           background-color: #101119;
+         } 
+        
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color: #0f142b;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #00f5b0;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  
+}
+.container{
+      margin-left: 175px !important;
+      margin-right: 175px !important;
+  }
+  body {
+          font-family: Arial;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background: #6a6a75;
+          margin-left: 160px;
+          color: white;
+        }
+        
+        
+        form.searchbar button {
+          float: left;
+          width: 5%;
+          padding: 5px;
+          background: #6a6a75;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background:#6a6a75;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        .form-control{
+          background-color: #060d24;
+          color: white;
+          border: none;
+        }
+        .col-4{
+          color:#00f5b0 ;
+        }
+        .form-top{
+          border-bottom: 1px solid #1b1f2e;
+        }
+        hr{
+          margin-top: 0px;
+        }
+        #heading{
+          font-weight: 550;
+        }
+        .progress{
+          width: 90%;
+          /* height: 110%; */
+        }
+        .progress-text{
+          margin-bottom: 5px;
+          font-size: 14px;
+        }
+        .main-container{
+          border: 1px solid #1b1f2e;
+        }
+        .fa-sort-up,.fa-sort-down{
+          font-size: 24px;
+        }
+        #population-chart{
+          background:#10152c;
+        }
+        .fa-sort-up,.fa-sort-down:hover{
+          cursor: pointer;
+          color: aqua;
+        }
+</style>
+    
+    
+    
+      <div class="main-container rounded">
+        <form action="" class="form-control p-4 px-5 form-top">
+            <div class="form-wrapper no-border">
+                <h3>Reports</h3>
+            </div>
+        </form>
+        <form action="" class="form-control py-2 px-5 pt-3">
+            <div class="form-wrapper no-border">
+                <div class="row">
+                    <div class="col">
+                        <h2 id="heading">{{ product.name }} Profit</h2>
+                    </div>
+                    <div class="col-4">
+                      <div class="row">
+                        <div class="col-sm-5 p-0">
+                          <h2 class="d-inline">{{ ov_profit }}</h2>
+                        </div>
+                        <div class="col p-0">
+                          <div class="row">
+                            <i class="fas fa-sort-up"></i>
+                          </div>
+                          <div class="row">
+                            <i class="fas fa-sort-down"></i>
+                          </div>
+                        </div>
+                      
+                      <!-- <div class="d-flex flex-column">
+                        <div>
+                          
+                        </div>
+                        
+                        <div>
+                          <i class="fas fa-sort-down"></i>
+                        </div>
+                      </div> -->
+                      </div>
+                    </div>
+                </div><hr>
+                <div>
+                    <h4>Profit Over Time</h4>
+                </div>
+                <div>
+                    <!-- <img src="report graph.PNG" alt=""> -->
+                    <canvas id="population-chart" class="p-4"></canvas>
+                    
+
+                </div><br>
+                <div class="row">
+                  <div class="col-6">
+                  <div>
+                      <h5>Collection</h5>
+                  </div>
+                  {% for profit in tr_profits %}
+                  <div class="row">
+                      <div class="col">
+                        <p class="progress-text">{{ profit }}</p>
+                          <div class="progress">
+                              <div class="progress-bar bg-success" role="progressbar" aria-valuenow="10"
+                              aria-valuemin="0" aria-valuemax="100" style="width:{{ profit }}%">
+                                {{ profit }}%
+                              </div>  
+                          </div> 
+                      </div>
+                  </div><br>
+                  {% endfor %}
+                  
+                
+              
+          </div> 
+          <div class="col-3 d-flex flex-column justify-content-center">
+            <div class="row">
+              <span class="chart" data-percent="50">
+                <span class="percent"></span>
+              </span>
+            </div>
+            <div class="row">
+              <span class="chart" data-percent="50">
+                <span class="percent"></span>
+              </span>
+            </div>
+          </div>     
+        </div>  
+                </div>
+        </form>
+      </div>
+    
+    <script>
+      $(".fa-sort-up").on("click",function(){
+        current_product=parseInt(window.location.pathname.split("/")[2])
+        current_product+=1
+        window.location.href=`/report/${current_product}/`
+      })
+      $(".fa-sort-down").on("click",function(){
+        current_product=parseInt(window.location.pathname.split("/")[2])
+        current_product-=1
+        if (current_product<=0){
+          current_product=1
+        }
+        window.location.href=`/report/${current_product}/`
+      })
+      $("#reports").addClass("active")
+      var $populationChart = $("#population-chart");
+      var ctx = $populationChart[0].getContext("2d");
+      var speedData = {
+      labels: {{ x|safe }},
+      datasets: [{
+        label: "Profit",
+        fill:false,
+        borderColor:"#00f5b0",
+        data: {{ y|safe }},
+      }]
+    };
+    var chartOptions = {
+      legend: {
+        display: false,
+        position: 'top',
+        labels: {
+          boxWidth: 80,
+          fontColor: 'black'
+        }
+      }
+    };
+      var lineChart = new Chart(ctx, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+    });
+    
+      $(function() {
+  $('.chart').easyPieChart({
+    barColor: '#00f5b0',
+    trackColor: '#f9f9f9',
+    scaleColor: 'false',
+    scaleLength: 5,
+    lineCap: 'round',
+    lineWidth: 12,
+    // trackWidth: undefined,
+    size: 110,
+    rotate: 0, // in degrees
+    animate: {
+      duration: 1000,
+      enabled: true
+    },
+    easing: function (x, t, b, c, d) { // easing function
+      t = t / (d/2);
+      if (t < 1) {
+        return c / 2 * t * t + b;
+      }
+      return -c/2 * ((--t)*(t-2) - 1) + b;
+    }
+  });
+});
+    </script>
+{% endblock %}

@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Add New Product
+{% endblock %}
+{% block content %}
+    <style>
+        body {
+          font-family: Arial;
+          background-color: #101119;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background: #6a6a75;
+          margin-left: 160px;
+        }
+        
+        form.searchbar button {
+          float: left;
+          width: 5%;
+          padding: 5px;
+          background: #6a6a75;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background: #0b7dda;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+         } 
+        
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color: #0f142b;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+                padding: 16px;
+            text-decoration: none;
+            }
+ 
+.sidebar a.active {
+  background-color: #00f5b0;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  
+}
+.container{
+      margin-left: 175px !important;
+      margin-right: 175px !important;
+  }
+  .form-control{
+    background-color: #060d24;
+    border: none;
+    color: white;
+  }
+  .btn-1{
+    background-color: #00f5b0;
+    border: none;
+    width: 60%;
+    text-align: center;
+    border-radius: 8px;
+  }
+  .choice{
+    width: 50%;
+    padding: 7px;
+    opacity: 0.4;
+  }
+  .file-upload-input{
+    display: none;
+  }
+  .file-upload-content{
+    border: 1px dashed white;
+    height: 100%;
+    max-width: 60%;
+    text-align: center;
+  }
+  .file-upload-content:hover{
+    cursor: pointer;
+  }
+  .image-upload-wrap{
+    height: 100%;
+    position: relative;
+  }
+/* #upload-text{
+  position: absolute;
+  top: 75%;
+  left: 23%;
+
+}*/
+.fas{
+  font-size: 30px;
+  /* position: absolute;
+  top: 65%;
+  left:28%; */
+} 
+.file-upload-image{
+  max-width: 135%;
+}
+.form-wrapper{
+  background-color: #060d24;
+}
+#id_Type{
+  display: block;
+}
+#product-form{
+  border:1px solid #1b1f2f;
+}
+
+    </style>
+
+
+    
+    
+    
+      
+          <div class="form-wrapper px-5 py-3">
+                <div class="row">
+                    <div class="col">
+                        <h3>Add New Product</h3>
+                    </div>
+                    <div class="col-2">
+                        <form action="save">
+                          <input class="btn-1" type="button" value="Save">
+                        </form>
+                    </div>
+                </div>
+          </div>
+      
+           
+
+            <form action="{% url 'Addproduct' %}" id="product-form" class="form-control py-3 px-5" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+                <div class="form-wrapper no-border">
+                    <div class="row">
+                        <div class="col">
+                          
+                            <div class="image-upload-wrap">
+                              
+                                <!-- <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*"> -->
+                                <div class="file-upload-content mr-5 my-2 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="upload-option"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <div class="upload-option"><h5 id="upload-text">Upload image here</h5></div>
+                                    <img class="file-upload-image" src="#" alt="">
+                                    {{ form.image }}
+                                    <div class="image-tittle-wrap" ></div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="col">
+                            <label for="pname">Product name</label><br>
+                            
+                            {{ form.name }}
+                            <br>
+                            
+                            <div>
+                                <label for="pcollection">Collection</label><br>
+                               
+                                {{ form.collection }}
+                                <br>
+                            </div>
+                            <div>
+                                <label for="ptype">Type</label><br>
+                                
+                                {{ form.Type }}
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        
+    
+    <script>
+      $(".btn-1").on("click",function(){
+          $("#product-form").submit()
+      })
+      document.querySelector("#id_image").className="file-upload-input"
+      document.querySelector("#id_name").className="choice form-select"
+      document.querySelector("#id_collection").className="choice form-select"
+      document.querySelector("#id_Type").className="choice form-select"
+
+      $(".file-upload-content").on("click",function(){
+        // $(".file-upload-input").trigger("click")
+        document.querySelector(".file-upload-input").click()
+      })
+    const inpFile= document.querySelector(".file-upload-input") 
+    inpFile.addEventListener("change",function(){
+    
+      const file = this.files[0]
+      console.log(file)
+      if (file) {
+        const reader=new FileReader()
+        
+        reader.addEventListener("load",function(){
+          document.querySelector(".file-upload-image").setAttribute("src",this.result)
+          document.querySelector(".file-upload-input").setAttribute("value",file)
+          $(".upload-option").css("display","none")
+          $(".file-upload-content").css("border","none")
+        })
+        reader.readAsDataURL(file);
+
+
+      }
+
+    });
+    </script>
+{% endblock %}

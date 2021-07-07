@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Sales
+{% endblock %}
+{% block content %}
+<style>
+        body {
+          font-family: Arial;
+          background-color: #101119;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background:#666773;
+          margin-left: 160px;
+        }
+        
+        form.searchbar button {
+          float: left;
+          width: 5%;
+          padding: 5px;
+          background: #666773;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background: #0b7dda;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+         } 
+        
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color: #10152c;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  
+}
+.container{
+      margin-left: 175px !important;
+      margin-right: 175px !important;
+  }
+  .form-control{
+    background-color: #0b1021;
+    /* color: white; */
+    border: none;
+  }
+  label,h3{
+    color:white;
+  }
+  .btn-2{
+    background-color: #00f5b0;
+    /* width: 60%; */
+    color: black;
+    border-radius: 1rem;
+    border: none;
+    font-weight: 550;
+  }
+  .btn-3{
+    background-color: #00f5b0;
+    /* width: 10%; */
+    border: none;
+    color: black;
+    border-radius: 1rem;
+    font-weight: 550;
+  }
+  .get{
+    opacity: 0.5;
+    background-color: white;
+  }
+  .half{
+          width: 25%;
+        }
+        .no-border{
+          border: none;
+        }
+        .more-half{
+          width: 79%;
+        }
+        .quarter{
+          width: 59%;
+        }
+        .form-top{
+          border-bottom: 1px solid #1b1f2e;
+        }
+        #id_Type{
+          display: none;
+        }
+        .extra-rounded{
+          border-radius: 0.75rem;
+        }
+</style>
+        
+    
+   
+    
+        <div class="form-wrapper m-5 rounded" >
+            <form action="" class="form-control px-4 py-3 form-top" >
+              {% csrf_token %}
+              
+                <div class="row">
+                    <div class="col">
+                        <h3 >Sales</h3>
+                    </div>
+                    <div class="col-2">
+                      
+                        <button class="btn-2 btn btn-primary px-4"><span class='big-font'>+ </span>New</button>
+                      
+                    </div>
+                </div>
+            </form>
+            <!-- {% if message %} -->
+              <div class="alert alert-danger m-3" role="alert">
+                {{ message }}
+                
+              </div>
+              <!-- {% endif %} -->
+            <form action="{% url 'Sales' %}" class="form-control px-4" method="POST">
+              {% csrf_token %}
+              {{ form.Type }}
+                <div class="form-wrapper py-4 no-border">
+                    <label for="pname">Product name</label><br>
+                    
+                        {{ form.product }}
+                    </select>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="sprice">Sales Price</label><br>
+                        <!-- <input class="get form-control more-half" type="number" name="sale price" id="sprice"> -->
+                        {{ form.price }}
+                    </div>
+                    <div class="col-4">
+                        <label for="percentage">Percentage</label>
+                        <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
+                            <!-- <input class="get form-control more-half" type="number" id="number" value="0" /> -->
+                            {{ form.percentage }}
+                            <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">
+                            </div>
+
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label for="sold-quantity">Sold Quantity</label><br>
+                    <!-- <input class="get form-control half" type="number" id="sold-quantity" value="0"> -->
+                    {{ form.quantity }}
+                </div>
+                <br>
+                <div class="d-flex">
+                    <div class="m-2">
+                      
+                        <button class="btn-3 btn btn-primary px-4">Delete</button>
+                      </div>
+                      <div class="m-2">
+                        <button class="btn-3 btn btn-primary px-4" type="submit">Save</button>
+                      
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+    <script>
+      document.querySelector("#id_product").className="get form-control half extra-rounded"
+      $("#sales").addClass("active")
+    </script>
+{% endblock %}

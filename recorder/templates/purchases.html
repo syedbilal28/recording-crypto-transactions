@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Purchases
+    {% endblock %}
+{% block content %}
+    <style>
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+           background-color: #101119;
+           overflow-x: hidden;
+         } 
+        .container{
+            margin-left: 150px;
+        }
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color:#0f142b;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  .nav{
+    margin-left: 150px;
+  }
+
+        
+        
+}
+form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background: #6c6b76;
+          margin-left: 160px;
+        }
+        
+        form.searchbar button {
+          float: left;
+          width: 5%;
+          padding: 5px;
+          background:#6c6b76;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background: #0b7dda;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        .btn-2{
+          background-color: #00f5b0 !important;
+          border: none;
+          font-weight: 600;
+          text-align: center;
+          border-radius: 1rem;
+          text-decoration: none;
+          color: black;
+          
+          /* width: 100%; */
+        }
+        
+        .form-control{
+          background-color: #0a0f22;
+          border: none;
+        }
+        .form-wrapper{
+          color: white;
+          border: 1px solid #1b1f2e;
+        }
+        .form-top{
+          border-bottom: 1px solid #1b1f2e;
+        }
+        .get{
+          opacity: 0.5;
+          background-color: white;
+          
+        }
+        .half{
+          width: 25%;
+        }
+        .no-border{
+          border: none;
+        }
+        .more-half{
+          width: 79%;
+        }
+        .quarter{
+          width: 59%;
+        }
+        textarea{
+          min-height:200px;
+        }
+        .purchase{
+          background-color: #00f5b0 !important;
+          border: none;
+          border-radius: 1rem;
+        }
+        #id_Type{
+          display: none;
+        }
+    </style>        
+    <!-- <title>Purchases</title> -->
+    
+
+     
+    
+    
+        <div class="form-wrapper m-5 rounded ">
+            <form action="" class="form-control px-4 py-3 form-top">
+                <div class="row">
+                    <div class="col">
+                        <h3 style="color: white;">Purchases</h3>
+                    </div>
+                    <div class="col-3">
+                      <form  action="add-product.html">
+                        <a href="{% url 'Addproduct' %}" class="btn-2 p-2 px-3" >Add New Product</a>
+                      </form>
+                    
+                    </div>                    
+                </div>
+                <div></div>
+            </form>
+            <form action="{% url 'Purchase' %}" class="form-control px-4" method="POST">
+              {% csrf_token %}
+              {{ form.Type }}
+              <div class="form-wrapper no-border py-4">
+                <label for="pname">Product name</label><br>
+                
+                  {{ form.product }}
+                </select><br>
+                
+                <div class="row">
+                  <div class="col-4">
+                    <label for="pprice">Product price</label><br>
+                    <!-- <input class="get form-control more-half" type="number" name="product price" id="pprice"> -->
+                    {{ form.price }}
+                  </div>
+                  <div class="col-4">
+                    <label for="pquantity">Product Quantity</label><br> 
+                    <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value"></div>
+                        <!-- <input class="get form-control more-half" type="number" id="number" value="0" /> -->
+                        {{ form.quantity }}
+                        <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value"></div>
+                  </div>
+                </div>
+                <br>
+                <div>
+                  <label for="pdate">Purchase Date</label><br>
+                  <!-- <input class="get form-control half" type="date" name="purchase date" id="pdate"> -->
+                  {{ form.timestamp }}
+                </div>
+                <br>
+                <div>
+                  <label for="pnote">Note</label><br>
+                  <!-- <textarea class="get form-control quarter" name="text" id="pnote" cols="30" rows="5"></textarea> -->
+                  {{ form.note }}
+                </div>
+                <div class="my-3">
+                  <button class="btn btn-primary purchase" type="submit">Purchase</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    
+    <script>
+       $("#purchases").addClass("active");
+      document.querySelector("#id_timestamp").type="date"
+      document.querySelector("#id_product").className="get form-control half"
+      
+    </script>
+{% endblock %}

@@ -1,0 +1,293 @@
+{% extends "admin_base.html" %}
+{% load static %}
+{% block title %}
+Email
+{% endblock %}
+
+{% block content %}
+<style>
+#chat-menu{
+    border-radius:0.75rem;
+    background-color:#24232c;
+    color:#a3a3a3;
+    margin:auto;
+    
+}
+.chat-option{
+    /* display:inline; */
+    /* margin:auto; */
+    margin:0.5rem 0px;
+    font-size:14px;
+}
+.new-message-btn{
+    border-radius:1rem;
+    background-color:#00f5b0;
+    color:white;
+    border:none;
+    width:100%;
+    font-size:14px !important;
+}
+.small-plus{
+    font-size:14px !important;
+}
+.float-right{
+    float:right;
+}
+.purp{
+    color:#8947b0;
+}
+.green{
+    color:#00a389;
+}
+.orange{
+    color:#ffbb54;
+}
+.blue{
+    color:#51b7e4;
+}
+#msg-search-bar{
+    background-color: #1f1e26;
+    border-radius: 0.75rem 0px 0px 0.75rem;
+    border: none;
+}
+#search-mail-btn{
+    background-color: #1f1e26;
+    border-radius: 0px 0.75rem 0.75rem 0px;
+    border: none;
+    padding-top: 4px !important;
+    padding-bottom: 8px !important;
+    
+}
+.mail-list-holder{
+    background-color: #17161e;
+    border-radius: 0.75rem;
+    color: white;
+}
+.gray{
+    color: #9c9c9d;
+}
+.mail-msg{
+    font-size: 14px;
+}
+#right-sidebar{
+    position: absolute;
+    right: 0px;
+    top: 68px;
+    height: 100%;
+    background-color: #191C30;
+}
+.tag{
+    border-radius: 0.75rem;
+    background-color: #453a31;
+    color: #e5a84e;
+    
+}
+</style>
+ <div class="row top-row">
+    <h2>Email</h2>
+    <p>Welcome to Admin Dashboard </p>
+ </div>
+ <div class="body-bottom my-2">
+     <div class="row">
+        <div class="col-3 d-flex justify-content-center">
+            <div id="chat-menu" class="d-flex flex-column justify-content-between p-3 px-4">
+            
+                <div class="chat-option">
+                    <button class="btn btn-primary new-message-btn py-2"><i class="fas fa-plus small-plus"></i> New Message</button>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <div class="col-9">
+                            <p class="px-2">Inbox</p>
+                        </div>
+                        <div class="col-1">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="col-9">
+                            <p class="px-2">Sent Emails</p>
+                        </div>
+                        <div class="col-1">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="far fa-star"></i>
+                        </div>
+                        <div class="col-9">
+                            <p class="px-2">Favourite</p>
+                        </div>
+                        <div class="col-1">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <div class="col-9">
+                            <p class="px-2">Draft</p>
+                        </div>
+                        <div class="col-1">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="far fa-trash-alt"></i>
+                        </div>
+                        <div class="col-9">
+                            <p class="px-2">Deleted</p>
+                        </div>
+                        <div class="col-1">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>Labels</p>
+                    </div>
+                    <div class="col text-right"><i class="fas fa-ellipsis-h float-right"></i></div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-tag purp"></i>
+                        </div>
+                        <div class="col-10">
+                            <p class="px-2">Work in Progress</p>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-tag green"></i>
+                        </div>
+                        <div class="col-10">
+                            <p class="px-2">Read Later</p>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-tag orange"></i>
+                        </div>
+                        <div class="col-10">
+                            <p class="px-2">Importants</p>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="chat-option">
+                    <div class="row opt-normal">
+                        <div class="col-2">
+                            <i class="fas fa-tag blue"></i>
+                        </div>
+                        <div class="col-10">
+                            <p class="px-2">Offers</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-5 mail-list-holder p-3">
+            <div class="search-bar-msg row">
+                <div class="col-8">
+                    <input type="text" id="msg-search-bar" class="px-2 py-2"><button id="search-mail-btn" class="my-1 py-2"><i class="fas fa-search search-mail-tag"></i></button>
+                </div>
+                <div class="col-1">
+                    <i class="far fa-square gray"></i>
+                </div>
+                <div class="col-1">
+                    <i class="fas fa-grip-lines gray"></i>
+                </div>
+                <div class="col-1">
+                    <i class="fas fa-thumbtack gray"></i>
+                </div>
+                <div class="col-1">
+                    <i class="fas fa-ellipsis-v gray"></i>
+                </div>
+            </div>
+            <div class="mail-holder d-flex flex-column my-2">
+                <div class="row mail">
+                    <div class="col-1">
+                        
+                    </div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-5">
+
+                            <p class="my-0 d-inline">Dummy Name</p>
+                            </div>
+                            <div class="col">
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+
+                        <div class="row"><p class="gray mail-msg">alfshasifbas fia sfi asif asif ias fas fas fiabsfibasf aisf ias fia fas sf</p></div>
+                    </div>
+                    <div class="col-2">
+                        <p class="gray small">2mago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+ <div id="right-sidebar" class="float-right p-3">
+    <div class="row top-msg-row">
+        <div class="col-5">
+            <div class="row">
+                <p class="m-0">Preview</p>
+            </div>
+            <div class="row">
+                <p class="small gray">Inbox</p>
+            </div>
+        </div>
+        <div class="col-1"><i class="far fa-trash-alt"></i></div>
+        <div class="col-1"><i class="fas fa-expand-alt"></i></div>
+        <div class="col-1"><i class="fas fa-times"></i></div>
+    </div>
+    <div id="message" class="p-2">
+        <div class="row">
+            <div class="col-8">
+                <div class="tag px-2 py-1">
+                    <i class="fas fa-tag small-plus"></i>
+                    <p class="d-inline small">Important</p>
+
+                </div>
+            </div>
+            <div class="col-1"><i class="fas fa-exclamation-circle small-plus white"></i></div>
+            <div class="col-1"><i class="far fa-star small-plus white"></i></div>
+        </div>
+        <div class="message-header">
+            <h4 class="message-heading white">Weekly Meeting With StakeHolders</h4>
+            <p class="small gray">Today, January 30th 2021 04:45PM</p>
+        </div>
+
+    </div>
+ </div>
+{% endblock %}

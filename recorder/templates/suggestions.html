@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/dd623901d8.js" crossorigin="anonymous"></script>
+   
+    <style>
+        body {
+          font-family: Arial;
+          background-color: #101119;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        form.searchbar input[type=text] {
+          padding: 5px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: left;
+          width: 70%;
+          background:#666773;
+          margin-left: 160px;
+        }
+        
+        form.searchbar button {
+          float: left;
+          width: 5%;
+          padding: 5px;
+          background: #666773;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+        }
+        
+        form.searchbar button:hover {
+          background: #0b7dda;
+        }
+        
+        form.searchbar::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+        body { 
+           /* margin: 0;  */
+           font-family: "Lato", sans-serif;
+         } 
+        
+        .sidebar {
+          margin: 0;
+          padding: 0;
+          width: 150px;
+          background-color: #10152c;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+        .sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+  
+}
+.container{
+      margin-left: 175px !important;
+      margin-right: 175px !important;
+      
+}
+.suggestion-heading{
+  font-size: 16px;
+  color: white;
+}
+.suggestion{
+  background-color: #212234;
+  color: white;
+}
+.suggestion-text{
+  opacity: 0.7;
+}
+.fa-arrow-up{
+  color: #00f5b0;
+}
+.fa-arrow-down{
+  color:#e02020;
+}
+.text-right{
+  text-align: right;
+}
+</style>
+    <title>suggestions</title>
+</head>
+<body>
+    <header>
+        <div class="row">
+            <div class="col-9">
+                <form class="searchbar" action="">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                  </form>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+        </div>
+       
+    </header>
+    <div class="sidebar">
+        <a href="purchases.html">Purchases</a><br>
+        <a  href="sales.html">Sales</a><br>
+        <a href="report.html">Reports</a><br>
+        <a href="gas-free.html">Gas free</a><br>
+        <a href="transaction.html">Transaction</a><br>
+        <a class="active" href="suggestions.html">Suggestions</a><br>
+        <a href="add-suggestion.html">Add Suggestions</a><br>
+        <a href="admin.html">Admin</a><br>
+        <a href="email">Email</a>
+    </div>
+    <div class="container">
+           <div class="suggestions-wrapper m-5">
+              <p class="suggestion-heading">All Suggestions()</p>
+              <div class="suggestions">
+                
+                  <div class="row suggestion rounded">
+                      <div class="col-1 py-3">
+
+                      </div>
+                      <div class="col-11 py-3">
+                          <div class="row"><p><strong>Karjo situbondo</strong></p></div>
+                          <div class="row"><p class="suggestion-text">SeaWire web is a wireframe kit tht has more then 15 popular categories and more than 200 screens from each category, SeaWire web deserves to be your partner in working on projects</p></div>
+                          <div class="row">
+                            <div class="col-8 d-flex">
+                              <div class="m-2"><p><i class="far fa-heart"></i> likes</p></div>
+                              <div class="m-2"><p><i class="fas fa-arrow-up"></i> 1</p></div>
+                              <div class="m-2"><p><i class="fas fa-arrow-down"></i> 1</p></div>
+                              
+                            </div>
+                            <div class="col-4">
+                              <div class="m-2 text-right"><p class="time">15 December 2020, 11:40 PM</p></div>
+                            </div>
+                              
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+       
+    </div>    
+</body>
+
+</html>

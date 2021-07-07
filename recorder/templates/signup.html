@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    {% include 'links.html' %}
+    <style>
+         .container{
+            min-height: 100vh;
+        }
+        body{
+            background-color: #010924;
+            border: none     !important;
+            font: white !important;
+        }
+        form{
+            background-color: #010924 !important;
+        }
+        .form-control{
+            width: 100%;
+            border: none;
+        }
+        .form-wrapper{
+            width: 40%;
+        }
+        p{
+            padding-left: 230px;
+            color: white;
+        }
+        .small{
+            line-height: 17px;
+            font-size: 14px;
+            color: white;
+            padding-left: 10px;
+            opacity: 0.5;
+        }
+        .main-heading{
+            color: white;
+            padding-left: 10px;
+        }
+        .btn1{
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: #00f5b0 !important;
+            border: none;
+            border-radius: 8px;
+        }
+        .btn2{
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+        }
+        .btn3{
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+        }
+        .p-2{
+            opacity: 0.3;
+        }
+        .social{
+            width: 100%;
+            border-radius: 0.75rem;
+            background-color: white;
+            outline: none;
+            color: black;
+            font-weight: 600;
+            border: none;
+        }
+        .social:hover{
+            background-color: #00f5b0;
+        }
+    </style>
+    <title>Signup</title>
+</head>
+<body>
+    <header class="nav"></header>
+    <div class="container d-flex justify-content-center ">
+        <div class="form-wrapper">
+            <p>Do you have account?<a href="login.html">Sign in</a></p>
+            
+            <h2 class="main-heading">Create Account</h2>
+            <div class="small">Follow the instruction to make it easier to register and you will be<br> 
+                able to explore inside</div><br>
+            <form action="{% url 'Signup' %}" class="form-control" method="POST">                
+                {% csrf_token %}
+                <div>
+                    <!-- <input type="text" class="form-control p-2" name="username" id="username" placeholder="Username"> -->
+                    {{ form.username }}
+                </div><br>
+                <div>
+                    <!-- <input type="email" class="form-control p-2" name="email" id="email" placeholder="Email"> -->
+                    {{ form.email }}
+                </div><br>
+                <div>
+                    <!-- <input type="text" class="form-control p-2" name="password" id="password" placeholder="Password"> -->
+                    {{ form.password }}
+                </div><br>
+                <div>
+                    <input type="submit"  value="Create Account" class="btn1">
+                </div><br>
+                <div class="row">
+                    <div class="col">
+                        <!-- <input type="submit" value="Google" class="btn2" > -->
+                        <button class="btn btn-primary social"><i class="fab fa-google"></i> Google</button>
+                    </div>
+                    <div class="col">
+                        
+                        <!-- <input type="submit" value="Facebook" class="btn3">  -->
+                        <button class="btn btn-primary social"><i class="fab fa-facebook"></i> Facebook</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>Copyright @2010-2022 Enchantiom All right reserved </p>
+    </footer>
+
+</body>
+</html>
