@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    {% include 'links.html' %}
     <style>
          .container{
             min-height: 100vh;
@@ -64,6 +65,18 @@
         .p-2{
             opacity: 0.3;
         }
+        .social{
+            width: 100%;
+            border-radius: 0.75rem;
+            background-color: white;
+            outline: none;
+            color: black;
+            font-weight: 600;
+            border: none;
+        }
+        .social:hover{
+            background-color: #00f5b0;
+        }
     </style>
     <title>Signup</title>
 </head>
@@ -95,10 +108,13 @@
                 </div><br>
                 <div class="row">
                     <div class="col">
-                        <input type="submit" value="Google" class="btn2" >
+                        <!-- <input type="submit" value="Google" class="btn2" > -->
+                        <button class="btn btn-primary social"><i class="fab fa-google"></i> Google</button>
                     </div>
                     <div class="col">
-                        <input type="submit" value="Facebook" class="btn3"> 
+                        
+                        <!-- <input type="submit" value="Facebook" class="btn3">  -->
+                        <button class="btn btn-primary social"><i class="fab fa-facebook"></i> Facebook</button>
                     </div>
                 </div>
             </form>

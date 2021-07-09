@@ -4,10 +4,10 @@ from django.shortcuts import render,redirect
 from .forms import GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
 from django.contrib.auth import login, logout,authenticate
 from .calculator import ProfitCalculator
-from .models import Transaction,Product,GasFee,Inventory
+from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote
 from datetime import datetime,date
 import copy
-from .serializers import TransactionSerializer,ProductSerializer
+from .serializers import SuggestionSerializer, TransactionSerializer,ProductSerializer
 import calendar
 
 # Create your views here.
@@ -157,7 +157,12 @@ def report(request,product_id):
     transactions_sp= Transaction.objects.filter(user=request.user,product=product)  
     profit=ProfitCalculator(transactions_sp)
     transactions=transactions_sp.filter(Type="sale")
-    overall_profit=round(((profit[0].sales-profit[0].purchase)/profit[0].purchase)*100,3)
+    if len(profit)>0:
+        overall_profit=round(((profit[0].sales-profit[0].purchase)/profit[0].purchase)*100,3)
+    else:
+        overall_profit=0
+    
+
     all_transactions= Transaction.objects.filter(user=request.user)
     profits=ProfitCalculator(all_transactions)
     print(profits)
@@ -260,8 +265,47 @@ def TransactionsFilter(request,filter):
     
     transactions=TransactionSerializer(transactions,many=True).data
     return JsonResponse({"transactions":transactions},status=200)
+
+def suggestions(request):
+    
+    return render(request,"suggestions.html")
+
+def SuggestionsAPI(request):
+    suggestions= Suggestion.objects.all()
+    suggestions=SuggestionSerializer(suggestions,many=True).data
+    return JsonResponse({"suggestions":suggestions},status=200)
+def like(request,suggestion_id):
+    suggestion=Suggestion.objects.get(pk=int(suggestion_id))
+    print(request.user)
+    like=suggestion.like(request.user)
+    if like:
+        return JsonResponse({"message":"liked"})
+    return JsonResponse({"message":"disliked"})
+def upvote(request,suggestion_id):
+    suggestion=Suggestion.objects.get(pk=int(suggestion_id))
+    vote=suggestion.upvote(request.user)
+    upvotes=Upvote.objects.filter(suggestion=suggestion).count()
+    downvotes=Downvote.objects.filter(suggestion=suggestion).count()    
+    if vote:
+        return JsonResponse({"message":"upvoted","upvotes":upvotes,"downvotes":downvotes})
+    return HttpResponse(status=406)
+
+def downvote(request,suggestion_id):
+    suggestion=Suggestion.objects.get(pk=int(suggestion_id))
+    vote=suggestion.downvote(request.user)
+    upvotes=Upvote.objects.filter(suggestion=suggestion).count()
+    downvotes=Downvote.objects.filter(suggestion=suggestion).count()
+    return JsonResponse({"message":"downvoted","upvotes":upvotes,"downvotes":downvotes})
+       
 def admin(request):
+    
+    
     return render(request,"admin_home.html")
+def activities(request):
+    activities= Transaction.objects.all().reverse()[:3]
+    activities=TransactionSerializer(activities,many=True).data
+    return JsonResponse({"activities":activities},status=200)
+
 
 def email(request):
     return render(request,"admin_email.html")

@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/dd623901d8.js" crossorigin="anonymous"></script>
-   
-    <style>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Suggestions
+{% endblock %}
+{% block content %}
+<style>
         body {
           font-family: Arial;
           background-color: #101119;
@@ -128,65 +124,146 @@ div.content {
 .text-right{
   text-align: right;
 }
+.extra-small{
+  font-size: 13px;
+}
+.medium{
+  font-size: 20px !important;
+}
+.time{
+  opacity: 0.7;
+}
+.like,.upvote,.downvote:hover{
+  cursor: pointer;
+}
+
 </style>
-    <title>suggestions</title>
-</head>
-<body>
-    <header>
-        <div class="row">
-            <div class="col-9">
-                <form class="searchbar" action="">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                  </form>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-        </div>
-       
-    </header>
-    <div class="sidebar">
-        <a href="purchases.html">Purchases</a><br>
-        <a  href="sales.html">Sales</a><br>
-        <a href="report.html">Reports</a><br>
-        <a href="gas-free.html">Gas free</a><br>
-        <a href="transaction.html">Transaction</a><br>
-        <a class="active" href="suggestions.html">Suggestions</a><br>
-        <a href="add-suggestion.html">Add Suggestions</a><br>
-        <a href="admin.html">Admin</a><br>
-        <a href="email">Email</a>
-    </div>
-    <div class="container">
+
+    <script>
+      $(document).ready(function() {
+        fetch("/api/suggestions/")
+        .then(response => response.json())
+        .then(data=>{
+          console.log(data.suggestions);
+          data.suggestions.forEach(add_suggestion);
+          })
+      });
+    </script>
+
+    
            <div class="suggestions-wrapper m-5">
               <p class="suggestion-heading">All Suggestions()</p>
               <div class="suggestions">
                 
-                  <div class="row suggestion rounded">
-                      <div class="col-1 py-3">
+              </div>
+            </div>
+            <script>
+              function add_suggestion(suggestion){
+                console.log(suggestion.timestamp.date)
+                temp=`<div class="col-8 d-flex" data-id="${suggestion.id}">
+                              <div class="mx-2 like" ><p><i class="far fa-heart medium"></i> likes</p></div>
+                              <div class="mx-2 upvote"><p><i class="fas fa-arrow-up medium"></i> ${suggestion.upvotes.length}</p></div>
+                              <div class="mx-2 downvote"><p><i class="fas fa-arrow-down medium"></i> ${suggestion.downvotes.length}</p></div>
+                              
+                            </div>`
+                l=suggestion.likes.length
+                for(i=0; i<l; i++){
+                  if(suggestion.likes[i].by.username == suggestion.user.username){
+                    temp=`<div class="col-8 d-flex" data-id="${suggestion.id}">
+                              <div class="mx-2 like" ><p><i class="fas fa-heart medium"></i> likes</p></div>
+                              <div class="mx-2 upvote"><p><i class="fas fa-arrow-up medium"></i> ${suggestion.upvotes.length}</p></div>
+                              <div class="mx-2 downvote"><p><i class="fas fa-arrow-down medium"></i> ${suggestion.downvotes.length}</p></div>
+                              
+                            </div>`
+                  }
+                  
+                }
+                suggestion_html=`<div class="row suggestion rounded my-3">
+                      <div class="col-1 py-1">
 
                       </div>
-                      <div class="col-11 py-3">
-                          <div class="row"><p><strong>Karjo situbondo</strong></p></div>
-                          <div class="row"><p class="suggestion-text">SeaWire web is a wireframe kit tht has more then 15 popular categories and more than 200 screens from each category, SeaWire web deserves to be your partner in working on projects</p></div>
-                          <div class="row">
-                            <div class="col-8 d-flex">
-                              <div class="m-2"><p><i class="far fa-heart"></i> likes</p></div>
-                              <div class="m-2"><p><i class="fas fa-arrow-up"></i> 1</p></div>
-                              <div class="m-2"><p><i class="fas fa-arrow-down"></i> 1</p></div>
-                              
-                            </div>
+                      <div class="col-11 py-2">
+                          <div class="row"><p><strong>${suggestion.user.username}</strong></p></div>
+                          <div class="row"><p class="suggestion-text small">${suggestion.content}</p></div>
+                          <div class="row suggestion-opt-holder">
+                            ${temp}
                             <div class="col-4">
-                              <div class="m-2 text-right"><p class="time">15 December 2020, 11:40 PM</p></div>
+                              <div class="m-2 text-right"><p class="time extra-small gray">${new Date(suggestion.timestamp).toLocaleString()}</p></div>
                             </div>
                               
                           </div>
                       </div>
-                  </div>
-              </div>
-            </div>
-       
-    </div>    
-</body>
+                  </div>`
+                  
+                  document.querySelector(".suggestions").innerHTML+=suggestion_html
 
-</html>
+                  $(".like").on("click",function(){
+                    console.log(this.parentElement)
+                    var suggestion_id=this.parentElement.dataset.id
+                    var target=this
+                      $.ajax({
+                        url:`/like/${suggestion_id}/`,
+                        method:"get",
+                        success:function(data){
+                          if(data.message=="liked"){
+                            target.innerHTML='<p><i class="fas fa-heart medium"></i> likes</p>'
+                          }
+                          else{
+                            target.innerHTML='<p><i class="far fa-heart medium"></i> likes</p>'
+                          }
+                        },
+                        error:function(e){
+                          console.log(e)
+                        }
+
+                      })
+
+
+                    })
+                    $(".upvote").on("click",function(){
+                    console.log(this.parentElement)
+                    var suggestion_id=this.parentElement.dataset.id
+                    var target=this
+                      $.ajax({
+                        url:`/upvote/${suggestion_id}/`,
+                        method:"get",
+                        success:function(data){
+                          target.innerHTML=`<p><i class="fas fa-arrow-up medium"></i> ${data.upvotes}</p>`
+                          target.nextElementSibling.innerHTML=`<p><i class="fas fa-arrow-down medium"></i> ${data.downvotes}</p>`
+                          
+                        },
+                        error:function(e){
+                          console.log(e)
+                        }
+
+                      })
+
+
+                    })
+                    $(".downvote").on("click",function(){
+                    console.log(this.parentElement)
+                    var suggestion_id=this.parentElement.dataset.id
+                    var target=this
+                      $.ajax({
+                        url:`/downvote/${suggestion_id}/`,
+                        method:"get",
+                        success:function(data){
+                          target.innerHTML=`<p><i class="fas fa-arrow-down medium"></i> ${data.downvotes}</p>`
+                          target.previousElementSibling.innerHTML=`<p><i class="fas fa-arrow-up medium"></i> ${data.upvotes}</p>`
+                          
+                        }
+
+                      })
+
+
+                    })
+              }
+              
+              // function like_handler(e){
+              //   console.log(e)
+              //   
+              // }
+            </script>
+{% endblock %}
+       
+    

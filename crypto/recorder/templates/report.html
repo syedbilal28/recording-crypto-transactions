@@ -140,6 +140,10 @@ div.content {
         #population-chart{
           background:#10152c;
         }
+        .fa-sort-up,.fa-sort-down:hover{
+          cursor: pointer;
+          color: aqua;
+        }
 </style>
     
     
@@ -231,9 +235,19 @@ div.content {
       </div>
     
     <script>
-      // $(".fa-sort-up").on("click",function(){
-
-      // })
+      $(".fa-sort-up").on("click",function(){
+        current_product=parseInt(window.location.pathname.split("/")[2])
+        current_product+=1
+        window.location.href=`/report/${current_product}/`
+      })
+      $(".fa-sort-down").on("click",function(){
+        current_product=parseInt(window.location.pathname.split("/")[2])
+        current_product-=1
+        if (current_product<=0){
+          current_product=1
+        }
+        window.location.href=`/report/${current_product}/`
+      })
       $("#reports").addClass("active")
       var $populationChart = $("#population-chart");
       var ctx = $populationChart[0].getContext("2d");
