@@ -30,9 +30,14 @@
           background-color:#0f142b;
           position: fixed;
           height: 100%;
-          overflow: hidden !important;
+          /* overflow: hidden !important; */
         }
-        
+        .sidebar::-webkit-scrollbar {
+  width: 2px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: #009970; 
+}
  .sidebar a{
    padding:0px !important;
  }
@@ -229,6 +234,7 @@ input[type=number] {
 background-color: #00b383;
 transition: 0.3s;
 }
+
     </style>        
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -281,62 +287,85 @@ transition: 0.3s;
             </div>
             
         </div>
-        <a href="/purchase/">
-          <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="purchases">   
-              <div>
-                  <i class="fas fa-clipboard-list py-2"></i>
-              </div>
-              <div>
-                  <p>Purchases</p>
-              </div>
-              
-          </div>
-        </a>
-        <a href="/sales/">
-          <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center"id="sales">   
-              <div>
-                  <i class="fas fa-hand-holding-usd py-2"></i>
-              </div>
-              <div>
-                  <p>Sales</p>
-              </div>
-              
-          </div>
-        </a>
-        <a href="/report/1/">
-          <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="reports">   
-              <div>
-                  <i class="fas fa-file-alt py-2"></i>
-              </div>
-              <div>
-                  <p>Reports</p>
-              </div>
-              
-          </div>
-        </a>
-        <a href="/gas-fee/">
-          <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="gas-fee">   
-              <div>
-                  <i class="fas fa-th py-2"></i>
-              </div>
-              <div>
-                  <p>Gas Fee</p>
-              </div>
-              
-          </div>
-        </a>
-        <a href="/transactions/">
-          <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="transactions">   
-              <div>
-                  <i class="fas fa-circle-notch py-2"></i>
-              </div>
-              <div>
-                  <p>Transactions</p>
-              </div>
-              
-          </div>
-        </a>
-        
+        <div class="sidebar-wrapper">
+          <a href="/purchase/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="purchases">   
+                <div>
+                    <i class="fas fa-clipboard-list py-2"></i>
+                </div>
+                <div>
+                    <p>Purchases</p>
+                </div>
+                
+            </div>
+          </a>
+          <a href="/sales/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center"id="sales">   
+                <div>
+                    <i class="fas fa-hand-holding-usd py-2"></i>
+                </div>
+                <div>
+                    <p>Sales</p>
+                </div>
+                
+            </div>
+          </a>
+          <a href="/report/1/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="reports">   
+                <div>
+                    <i class="fas fa-file-alt py-2"></i>
+                </div>
+                <div>
+                    <p>Reports</p>
+                </div>
+                
+            </div>
+          </a>
+          <a href="/gas-fee/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="gas-fee">   
+                <div>
+                    <i class="fas fa-th py-2"></i>
+                </div>
+                <div>
+                    <p>Gas Fee</p>
+                </div>
+                
+            </div>
+          </a>
+          <a href="/transactions/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="transactions">   
+                <div>
+                    <i class="fas fa-circle-notch py-2"></i>
+                </div>
+                <div>
+                    <p>Transactions</p>
+                </div>
+                
+            </div>
+          </a>
+          <a href="/suggestions/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="transactions">   
+                <div>
+                  <i class="fas fa-user-alt py-2"></i>
+                </div>
+                <div>
+                    <p>Suggestions</p>
+                </div>
+                
+            </div>
+          </a>
+          <a href="/add-suggestions/">
+            <div class="d-flex flex-column sidebar-item p-2 justify-content-center align-items-center" id="transactions">   
+                <div>
+                  <i class="fas fa-user-alt py-2"></i>
+                </div>
+                <div>
+                    <p>Add Suggestions</p>
+                </div>
+                
+            </div>
+          </a>
+        </div>
         
     </div>
     <header>

@@ -1,3 +1,4 @@
+
 from enum import auto
 from django.db import models
 from django.contrib.auth.models import User
@@ -49,22 +50,70 @@ def upload_product(instance,filename):
 
 
 
-class Post(models.Model):
+class Suggestion(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     content= models.CharField(max_length=1000)
     timestamp=models.DateTimeField(auto_now_add=True)
 
-class Like(models.Model):
-    by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="like") 
-    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    def like(self,user):
+        try:
+            like=Like.objects.get(by=user,suggestion=self)
+            self.dislike(like)
+            return False
+        except:
 
+            Like.objects.create(by=user,suggestion=self)
+            return True
+    def dislike(self,like_object):
+        like_object.delete()
+        return True
+    def upvote(self,user):
+        try:
+            vote=Downvote.objects.get(by=user,suggestion=self)
+        except:
+            vote= None
+        if vote:
+            vote.delete()
+        try:
+            Upvote.objects.create(by=user,suggestion=self)
+        except:
+            return False
+        return True
+    def downvote(self,user):
+        try:
+            vote=Upvote.objects.get(by=user,suggestion=self)
+        except:
+            vote= None
+        if vote:
+            vote.delete()
+        try:
+            Downvote.objects.create(by=user,suggestion=self)
+        except:
+            return False
+        return True
+class Like(models.Model):
+    by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="likes") 
+    suggestion = models.ForeignKey(Suggestion,on_delete=models.CASCADE,related_name="likes")
+
+    class Meta:
+        unique_together=("by","suggestion")
+    def __str__(self):
+        return f"{self.suggestion.user.username}: {self.by.username} {self.suggestion.pk}"
 class Upvote(models.Model):
-    by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="upvote") 
-    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="upvotes") 
+    suggestion = models.ForeignKey(Suggestion,on_delete=models.CASCADE,related_name="upvotes")
+    class Meta:
+        unique_together=("by","suggestion")
+    def __str__(self):
+        return f"{self.suggestion.user.username}: {self.by.username} {self.suggestion.pk}"
 
 class Downvote(models.Model):
-    by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="downvote") 
-    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="downvotes") 
+    suggestion = models.ForeignKey(Suggestion,on_delete=models.CASCADE,related_name="downvotes")
+    class Meta:
+        unique_together=("by","suggestion")
+    def __str__(self):
+        return f"{self.suggestion.user.username}: {self.by.username} {self.suggestion.pk}"
 
 class Collection(models.Model):
     name=models.CharField(max_length=100)

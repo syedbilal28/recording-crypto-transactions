@@ -246,7 +246,7 @@ td{
             </div>
           </div>
     <script>
-      document.querySelector("#transactions").addClass("active")
+      
       $(".edit-opt").on("click",function(){
         
         var transaction_id= this.parentElement.parentElement.dataset.id
@@ -345,5 +345,6 @@ td{
           }
         })
       }
+      $("#transactions").addClass("active")
     </script>
 {% endblock %}
