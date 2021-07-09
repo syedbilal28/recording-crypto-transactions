@@ -298,6 +298,8 @@ def downvote(request,suggestion_id):
     return JsonResponse({"message":"downvoted","upvotes":upvotes,"downvotes":downvotes})
        
 def admin(request):
+    activities= Transaction.objects.all().reverse()[:3]
+
     return render(request,"admin_home.html")
 
 def email(request):
