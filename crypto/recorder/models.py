@@ -122,17 +122,17 @@ class Collection(models.Model):
     def __str__(self):
         return self.name
 
-class Type(models.Model):
-    name=models.CharField(max_length=100)
-    logo=models.ImageField(upload_to=to_upload_type)
-    def __str__(self):
-        return self.name
+# class Type(models.Model):
+#     name=models.CharField(max_length=100)
+#     logo=models.ImageField(upload_to=to_upload_type)
+#     def __str__(self):
+#         return self.name
     
     
 class Product(models.Model):
     name=models.CharField(max_length=100)
     collection=models.ForeignKey(Collection,on_delete=models.CASCADE)
-    Type=models.ForeignKey("Type",on_delete=models.CASCADE)
+    # Type=models.ForeignKey("Type",on_delete=models.CASCADE)
     image= models.ImageField(upload_to=upload_product)
     def __str__(self):
         return self.name
@@ -140,7 +140,7 @@ class Product(models.Model):
 class Transaction(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
-    price=models.IntegerField()
+    price=models.FloatField()
     Type= models.CharField(max_length=10)
     quantity=models.IntegerField()
     percentage=models.FloatField(null=True,blank=True)
@@ -148,8 +148,13 @@ class Transaction(models.Model):
     note= models.CharField(max_length=2000,null=True)
     profit= models.FloatField(null=True,blank=True)
 
+class Currency(models.Model):
+    name=models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
 class GasFee(models.Model):
-    currency=models.CharField(max_length=100,null=True,blank=True)
+    currency=models.ForeignKey(Currency,null=True,on_delete=models.SET_NULL)
     date=models.DateField()
     fee=models.FloatField()
 
@@ -165,10 +170,10 @@ class ThreadManager(models.Manager):
         return qs
 
     def get_or_new(self, user, other_username):  # get_or_create
-        first_user = user.profile
-        if first_user.user.username == other_username:
+        first_user = user
+        if first_user.username == other_username:
             return None
-        other_user=User.objects.get(username=other_username).profile
+        other_user=User.objects.get(username=other_username)
         qlookup1 = models.Q(first=first_user) & models.Q(second=other_user)
         qlookup2 = models.Q(first=other_user) & models.Q(second=first_user)
         qs = self.get_queryset().filter(qlookup1 | qlookup2).distinct()
@@ -210,7 +215,7 @@ class Thread(models.Model):
 
 
 class ChatMessage(models.Model):
-    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL)
+    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL,related_name="chat")
     user = models.ForeignKey(User, verbose_name='sender', on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)

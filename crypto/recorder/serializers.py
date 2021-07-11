@@ -1,23 +1,24 @@
 
 from rest_framework import serializers
-from .models import Transaction,Product,Suggestion,Like,Upvote,Downvote
+from .models import Transaction,Product,Suggestion,Like,Upvote,Downvote,Thread,ChatMessage
 from django.contrib.auth.models import User
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
         fields="__all__"
-
-class TransactionSerializer(serializers.ModelSerializer):
-    product=ProductSerializer()
-    class Meta:
-        model=Transaction
-        fields='__all__'
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields="__all__"
+class TransactionSerializer(serializers.ModelSerializer):
+    product=ProductSerializer()
+    user=UserSerializer()
+    class Meta:
+        model=Transaction
+        fields='__all__'
+
+
 class LikeSerializer(serializers.ModelSerializer):
     by=UserSerializer()
     class Meta:
@@ -42,3 +43,18 @@ class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model=Suggestion
         fields=["id","user","content","timestamp","likes","upvotes","downvotes"]
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    user=UserSerializer()
+    class Meta:
+        model=ChatMessage
+        fields=["user","message","timestamp"]
+
+class ThreadSerializer(serializers.ModelSerializer):
+
+    first=UserSerializer()
+    second=UserSerializer()
+    chat=ChatMessageSerializer(many=True)
+    class Meta:
+        model=Thread
+        fields=["first","second","updated","timestamp","chat"]

@@ -27,7 +27,7 @@ Admin
         font-weight: 300;
         font-size: 14px;
     }
-    .user,.activity{
+    .user-admin,.activity{
         min-width: 280px;
     }
     .menu{
@@ -45,9 +45,166 @@ Admin
     .white{
         color: white;
     }
+    .flex-item{
+        overflow-y: auto;
+        /* overflow-x: hidden; */
+        max-height: 350px;   
+    }
+    .no-style{
+  background-color: inherit;
+  border: none;
+  color: white;
+}
+#right-sidebar{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    background-color: #191C30;
+    position: fixed;
+    visibility: hidden;
+    width: 0px;
+    -webkit-transition:1s;
+}
+.white{
+  color: white !important;
+}
+#msg-search-bar{
+    background-color: #1f1e26;
+    border-radius: 0.75rem 0px 0px 0.75rem;
+    border: none;
+}
+#search-mail-btn{
+    background-color: #1f1e26;
+    border-radius: 0px 0.75rem 0.75rem 0px;
+    border: none;
+    padding-top: 4px !important;
+    padding-bottom: 8px !important;
+    
+}
+.mail-list-holder{
+    background-color: #17161e;
+    border-radius: 0.75rem;
+    color: white;
+}
+.gray{
+    color: #9c9c9d;
+}
+.mail-msg{
+    font-size: 14px;
+}
+#chat_message{
+ border-radius: 0.75rem;
+ border: none;
+ background-color: white;
+ opacity: 0.5;
+}
+#chat_message:focus{
+  outline: none;
+}
+.send{
+  border-radius: 50%;
+}
+.fa-paper-plane{
+  font-size: 16px !important;
+}
+#Chatholder{
+  height: 100%;
+}
+#message{
+  height: 100%;
+}
+#Chatbox{
+  height: 85%;
+}
+.message{
+  font-size: 14px;
+  
+}
+ul{
+  list-style-type: none;
+  margin: 0px;
+  padding-left: 0px;
+}
+.message{
+        /* border:1px solid black; */
+        display: inline-block;
+        margin: 0px;
+    }
+    .message-div{
+        display: inline-block;
+
+    }
+    .time{
+        font-size: small;
+        font-weight: 100;
+    }
+    .message-wrapper{
+        display: inline-block;
+        position: relative;
+    }
+    .ours{
+        background-color: white;
+        border-radius: 30px 30px 0px 30px;
+        margin-right: 10px;
+        color: black;
+        
+    }
+    .theirs{
+        background-color: #3bb288;
+        border-radius: 30px 30px 30px 0px;
+        margin-left: 10px;
+        color: white;
+        text-align: left;
+    }
+    .user{
+        display:block;
+        z-index: 1;
+        text-align: right;
+        color: black;
+    }
+    .clicked{
+      
+      /* transition: 0.7s !important; */
+      /* animation-name:message ;
+      animation-duration: 0.7s; */
+      display: block !important;
+      width: 21% !important;
+      transition: 0.7s !important;
+    }
+    @keyframes message {
+  from {width: 0px;}
+  to {width: 21%;}
+}
+#right-sidebar.active{
+  visibility: visible !important;
+  
+  width: 21% !important;
+  
+}
+header{
+    min-width: 100vw;
+}
 </style>
+<script>
+    fetch("/api/activities/").then(response=>response.json())
+    .then(data=>{
+        console.log(data)
+        data.activities.forEach(add_activity)
+    })
+    fetch("/api/threads/").then(response=>response.json())
+    .then(data=>{
+        console.log(data)
+        data.threads.forEach(add_thread)
+    })
+    fetch("/api/users/").then(response=>response.json())
+    .then(data=>{
+        console.log(data)
+        data.users.forEach(add_user)
+    })
+</script>
 <div class="row">
-    <h3 class="white">User Profile</h3>
+    <h3 class="white">{{ user.username }} Profile</h3>
     <p class="white">Welcome to admin Dashboard</p>
 </div>
 <div class="d-flex">
@@ -62,27 +219,7 @@ Admin
         </div>
         <div class="body-bottom">
             <div class="chat-holder">
-                <div class="chat row px-2 py-1">
-                    <div class="col-2">
-                        <img src="" alt="" class="profile-img">
-                    </div>
-                    <div class="col-8">
-                        <div class="row">
-                            <p>Chloe Jess</p>
-                        </div>
-                        <div class="row">
-                            <p class="message lighter">I have done it</p>
-                        </div>
-                    </div>
-                    <div class="col-2 p-0">
-                        <div class="row">
-                            <p class="extra-small">seen ago</p>
-                        </div>
-                        <div class="row">
-                            <i class="fas fa-check-double small"></i>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
         </div>
@@ -97,25 +234,8 @@ Admin
             </div>
         </div>
         <div class="body-bottom">
-            <div class="chat-holder">
-                <div class="user row px-2 py-1">
-                    <div class="col-2">
-                        <img src="" alt="" class="profile-img">
-                    </div>
-                    <div class="col-8">
-                        <div class="row">
-                            <p>Andy Stevavnous</p>
-                        </div>
-                        <div class="row">
-                            <p class="desc lighter">Representative</p>
-                        </div>
-                    </div>
-                    <div class="col-2 p-0 d-flex align-items-center justify-content-center">
-                        <div class="row">
-                            <i class="fas fa-ellipsis-v menu"></i>
-                        </div>
-                    </div>
-                </div>
+            <div class="users-holder">
+                
             </div>
 
         </div>
@@ -128,7 +248,76 @@ Admin
         </div>
         <div class="body-bottom">
             <div class="activity-holder">
-                <div class="activity row px-2 py-1">
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    
+    function add_user(user){
+        user_html=`<div class="user-admin row px-2 py-1 my-2">
+                    <div class="col-2">
+                        <img src="" alt="" class="profile-img">
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <p>${user.username}</p>
+                        </div>
+                        <div class="row">
+                            
+                        </div>
+                    </div>
+                    <div class="col-2 p-0 d-flex align-items-center justify-content-center">
+                        <div class="row">
+                            <i class="fas fa-ellipsis-v menu"></i>
+                        </div>
+                    </div>
+                </div>`
+                document.querySelector(".users-holder").innerHTML+=user_html
+    }
+    function add_thread(thread){
+        console.log(thread)
+        thread_html=`<div class="chat row px-2 py-1 my-2">
+                    <div class="col-2">
+                        <img src="" alt="" class="profile-img">
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <p>${thread.second.username}</p>
+                        </div>
+                        <div class="row">
+                            <p class="message lighter">${thread.chat[thread.chat.length-1].message}</p>
+                        </div>
+                    </div>
+                    <div class="col-2 p-0">
+                        <div class="row">
+                            <p class="extra-small">seen ago</p>
+                        </div>
+                        <div class="row">
+                            <i class="fas fa-check-double small"></i>
+                        </div>
+                    </div>
+                </div>`
+                document.querySelector(".chat-holder").innerHTML+=thread_html
+                $(".chat").on("click",function(){
+                    
+                    other_user=this.children[1].children[0].children[0].innerText
+                    window.other_user=other_user
+                    $.ajax({
+                        url:`/api/chat-admin/${other_user}/`,
+                        method:"get",
+                        success:function(data){
+                            OpenSlideMenu();
+                            console.log()
+                            data.thread.chat.forEach(add_message)
+                        }
+                    })
+                })
+    }
+    function add_activity(activity){
+        activity_html=`<div class="activity row px-2 py-1">
                     <div class="col-2">
                         <i class="fas fa-dot-circle seen small"></i>
                         <div class="vl-holder">
@@ -137,17 +326,36 @@ Admin
                     </div>
                     <div class="col-10">
                         <div class="row">
-                            <p class="timestamp">12 January 2012</p>
+                            <p class="timestamp">${new Date(activity.timestamp).toLocaleString()}</p>
                         </div>
                         <div class="row">
-                            <p class="activity lighter">A dummy activity was created by a dummy user which initiated a dumm incident to perform a dummy action</p>
+                            <p class="activity lighter">A transaction was created by ${activity.user.username} for ${activity.Type} of ${activity.product.name} worth ${activity.price}</p>
                         </div>
                     </div>
                     
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
+                </div>`
+        document.querySelector(".activity-holder").innerHTML+=activity_html
+    }
+    function add_message(message){
+    if (message.user.username=="{{ request.user.username }}"){
+      message_html=`<li class="user my-1">
+                    <div class="message-div">
+                      <div class="message-wrapper px-3 py-1 ours">
+                        <p class="message">${message.message}</p>
+                      </div>
+                    </div>
+                  </li>`
+                }
+    else{
+      message_html=`<li class="other my-1">
+                    <div class="message-div">
+                      <div class="message-wrapper px-3 py-1 theirs">
+                        <p class="message">${message.message}</p>
+                      </div>
+                    </div>
+                  </li>`
+    }
+    document.querySelector("#Chatbox").innerHTML+=message_html
+  }
+</script>
 {% endblock %}

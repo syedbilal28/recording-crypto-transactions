@@ -4,12 +4,13 @@ from django.shortcuts import render,redirect
 from .forms import GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
 from django.contrib.auth import login, logout,authenticate
 from .calculator import ProfitCalculator
-from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote
+from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote,ChatMessage,Thread
 from datetime import datetime,date
+from django.contrib.auth.models import User
 import copy
-from .serializers import SuggestionSerializer, TransactionSerializer,ProductSerializer
+from .serializers import ChatMessageSerializer, SuggestionSerializer, TransactionSerializer,ProductSerializer,ThreadSerializer,UserSerializer
 import calendar
-
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def signup(request):
     if request.method== "POST":
@@ -24,6 +25,8 @@ def signup(request):
         return render(request,"signup.html",{"form":form})
 
 def Login(request):
+    if request.user.is_authenticated:
+        return redirect("Purchase")
     if request.method=="POST":
         form= LoginForm(request.POST)
         if form.is_valid():
@@ -144,7 +147,8 @@ def sale(request):
         inventory.available_quantity-=int(data['quantity'])
         inventory.save()
         # return HttpResponse("Hello Worls")
-        return redirect("Purchase")
+        product=Product.objects.get(pk=int(data['product']))
+        return redirect(f"/report/{product.pk}/")
         # try:
         #     inventory=Inventory.objects.get(user=request.user,product=)
     else:
@@ -153,7 +157,11 @@ def sale(request):
         return render(request,"sales.html",context)
 
 def report(request,product_id):
-    product= Product.objects.get(pk=int(product_id))
+    try:
+        product= Product.objects.get(pk=int(product_id))
+    except:
+        return redirect("/report/1/")
+
     transactions_sp= Transaction.objects.filter(user=request.user,product=product)  
     profit=ProfitCalculator(transactions_sp)
     transactions=transactions_sp.filter(Type="sale")
@@ -298,14 +306,51 @@ def downvote(request,suggestion_id):
     return JsonResponse({"message":"downvoted","upvotes":upvotes,"downvotes":downvotes})
        
 def admin(request):
-    
-    
-    return render(request,"admin_home.html")
-def activities(request):
+    if request.user.is_superuser:
+        
+        return render(request,"admin_home.html")
+    return redirect("Purchase")
+
+def ActivitiesApi(request):
     activities= Transaction.objects.all().reverse()[:3]
     activities=TransactionSerializer(activities,many=True).data
     return JsonResponse({"activities":activities},status=200)
+def UsersApi(request):
+    users=User.objects.all()
+    users=UserSerializer(users,many=True).data
+    return JsonResponse({"users":users},status=200)
 
+def ThreadsApi(request):
+    threads=Thread.objects.all()[:4]
+    threads=ThreadSerializer(threads,many=True).data
+    return JsonResponse({"threads":threads},status=200)
+
+@csrf_exempt
+def chatApi(request):
+    admin= User.objects.filter(is_staff=True)[0]
+    thread=Thread.objects.get_or_new(user=admin,other_username=request.user)[0]
+    print(thread)
+    messages=ThreadSerializer(thread).data
+    return JsonResponse({"thread":messages},status=200)
+
+def ChatApiAdmin(request,username):
+    thread=Thread.objects.get_or_new(user=request.user,other_username=User.objects.get(username=username))[0]
+    print(thread)
+    messages=ThreadSerializer(thread).data
+    return JsonResponse({"thread":messages},status=200)
+
+@csrf_exempt
+def SendMessage(request):
+    if request.POST.get("other_user"):
+        admin=request.user    
+        user=User.objects.get(username=request.POST.get("other_user"))
+    else:    
+        admin= User.objects.filter(is_staff=True)[0]
+        user=request.user
+    thread=Thread.objects.get_or_new(user=admin,other_username=user)[0]
+    msg=ChatMessage.objects.create(thread=thread,message=request.POST.get("message"),user=request.user)
+    msg_serialized=ChatMessageSerializer(msg).data
+    return JsonResponse({"message":msg_serialized},status=200)
 
 def email(request):
     return render(request,"admin_email.html")

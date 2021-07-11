@@ -19,4 +19,11 @@ urlpatterns=[
     path("like/<str:suggestion_id>/",views.like,name="like"),
     path("upvote/<str:suggestion_id>/",views.upvote,name="upvote"),
     path("downvote/<str:suggestion_id>/",views.downvote,name="downvote"),
+    path("api/activities/",views.ActivitiesApi,name="ActivitiesAPI"),
+    path("api/users/",views.UsersApi,name="UsersAPI"),
+    path("api/threads/",views.ThreadsApi,name="ThreadsAPI"),
+    path("api/chat/",views.chatApi,name="ChatApi"),
+    path("send-message/",views.SendMessage,name="SendMessage"),
+    path("api/chat-admin/<str:username>/",views.ChatApiAdmin,name='ChatAPIAdmin'),
+    
 ]

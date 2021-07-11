@@ -197,6 +197,21 @@ form.searchbar input[type=text] {
         a{
          text-decoration: none; 
         }
+        .no-style{
+  background-color: inherit;
+  border: none;
+  color: white;
+}
+.flex-item::-webkit-scrollbar {
+  width: 2px;
+  /* margin-right: 10px; */
+}
+.flex-item::-webkit-scrollbar-thumb {
+  background: #009970; 
+}
+#chat_message{
+  width: 78%;
+}
     </style>        
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -249,25 +264,107 @@ form.searchbar input[type=text] {
     <header>
       <div class="row p-3">
         <div class="col-sm-10">
-            <form class="searchbar" action="/action_page.php">
+            <!-- <form class="searchbar" action="/action_page.php">
                 <input type="text" placeholder="Search.." name="search" class="input-rounded py-1 px-2">
                 <button type="submit" class="search-button py-1 px-2"><i class="fa fa-search"></i></button>
-              </form>
+              </form> -->
         </div>
         <div class="col-sm-1 py-1 text-center">
             <i class="fas fa-bell white"></i>
         </div>
-        <div class="col-sm-1 py-1 text-center">
+        <div class="col-sm-1 py-1 text-center" onclick="OpenSlideMenu()">
             <i class="far fa-sticky-note white"></i>
         </div>
-        <div class="col-1"></div>
+        <div class="col-sm-1 py-1 text-center">
+          <div class="dropdown">
+            <a class="no-style dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-circle" ></i>
+            </a>
+            
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><a class="dropdown-item" href="/purchase/">Home</a></li>
+              
+            </ul>
+        </div>
     </div>
     </header>
     <br>
     <div class="container px-4">
         {% block content %}
         {% endblock %}
+        <div id="right-sidebar" class="float-right p-3">
+          <div class="row top-msg-row">
+              <div class="col-10">
+                  <div class="row">
+                      <p class="m-0 white">Preview</p>
+                  </div>
+                  <div class="row">
+                      <p class="small white">Inbox</p>
+                  </div>
+              </div>
+              
+              <div class="col-1 close-message" onclick="CloseSlideMenu()"><i class="fas fa-times white"></i></div>
+          </div>
+          <div id="message" class="p-2">
+              
+            <div  id="Chatholder">
+              
+              <ul id="Chatbox">
+             
+              </ul>
+       
+              
+           <form id="form" method="POST" autocomplete="off">
+                    {% csrf_token %}
+                   <input type="hidden" value="{{ user.username }}" id="myusername">
+                   <input type="text" id="chat_message" class="p-1">
+                   <button type="submit" class="btn btn-primary send"><i class="fas fa-paper-plane"></i></button>
+           </form>
+              
+          </div>
+      
+          </div>
+       </div>
     </div>
     
 </body>
+<script>
+  $("#form").on("submit",function(event){
+    var message=$("#chat_message").val()
+    
+    event.preventDefault()
+    $.ajax({
+      url:`/send-message/`,
+      method:"POST",
+      "headers": {
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      data:{
+          "other_user":window.other_user,
+        "message":message,
+        
+      },
+      success:function(data){
+        console.log(data)
+        add_message(data.message)
+        document.querySelector("#chat_message").value=""
+      }
+    })
+
+  })
+  function OpenSlideMenu(){
+    var sidebar=document.querySelector("#right-sidebar")
+    $(sidebar).addClass("active")
+    
+    // sidebar.style.width="21%"
+    // sidebar.style.display="block"
+    
+  }
+  function CloseSlideMenu(){
+    var sidebar=document.querySelector("#right-sidebar")
+    $(sidebar).removeClass("active")
+    // sidebar.style.width="0px"
+    // sidebar.style.display="none"
+  }
+</script>
 </html>

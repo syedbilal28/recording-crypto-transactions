@@ -40,12 +40,13 @@ class SaleForm(ModelForm):
     timestamp=forms.DateField(widget=forms.DateInput(attrs={"class":"get form-control half extra-rounded"}))
     Type=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"value":"sale"}))
     # product=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"class":"get form-control half"}))
-    percentage=forms.IntegerField(widget=NumberInput(attrs={"class":"get form-control more-half extra-rounded"}))
+    percentage=forms.FloatField(widget=NumberInput(attrs={"class":"get form-control more-half extra-rounded"}))
     class Meta:
         model=Transaction
         fields="__all__"
 
 class GasFeeForm(ModelForm):
+    fee= forms.FloatField(widget=NumberInput(attrs={"placeholder":0.001}))
     class Meta:
         model=GasFee
         fields="__all__"

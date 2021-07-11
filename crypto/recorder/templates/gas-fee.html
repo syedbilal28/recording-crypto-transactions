@@ -149,6 +149,10 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+input::placeholder{
+  color: black;
+  opacity: 0.5;
+}
 .green{
   color: #00f5b0;
 }
@@ -201,7 +205,7 @@ input[type=number] {
                         <br><br>
                         
                           <input class="btn-1 mb-5" type="submit" value="Add">
-                        
+                       
                     </div>
                     <div class="col">
                       <div class="row ">
@@ -246,7 +250,6 @@ input[type=number] {
                     </div>
                 </div>
             </div>
-
         </form>
       <script>
         $("#gas-fee").addClass("active")
@@ -255,6 +258,8 @@ input[type=number] {
         document.querySelector("#id_date").type="date"
         document.querySelector("#id_fee").className="get extra-rounded p-2"
         document.querySelector("#id_fee").type="number"
+        
+        // document.querySelector("#id_currency").childElement
         var $populationChart = $("#population-chart");
         var ctx = $populationChart[0].getContext("2d");
         new Chart(ctx, {
