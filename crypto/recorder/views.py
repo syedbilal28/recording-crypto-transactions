@@ -8,7 +8,7 @@ from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downv
 from datetime import datetime,date
 from django.contrib.auth.models import User
 import copy
-from .serializers import ChatMessageSerializer, SuggestionSerializer, TransactionSerializer,ProductSerializer,ThreadSerializer,UserSerializer
+from .serializers import ChatMessageSerializer, SuggestionSerializer, TransactionSerializer,ProductSerializer,GasFeeSerializer,ThreadSerializer,UserSerializer
 import calendar
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -49,6 +49,7 @@ def Login(request):
 
 def purchase(request):
     if request.method=="POST":
+        print(request.POST.get("form"))
         form=PurchaseForm(request.POST)
         data=request.POST
         print(data)
@@ -70,7 +71,8 @@ def purchase(request):
             )
         inventory.available_quantity+=int(data['quantity'])
         inventory.save()
-        return redirect("Purchase")
+        transaction=TransactionSerializer(transaction).data
+        return JsonResponse({"transaction":transaction},status=200)
         # print(request.POST)
         # print(form.is_valid())
         # if form.is_valid():
@@ -82,12 +84,15 @@ def purchase(request):
         return render(request,"purchases.html",context)
 
 def AddProduct(request):
+    print(request.POST,request.FILES)
     if request.method=="POST":
         form=ProductForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            product=form.save()
             
-        return redirect("Purchase")
+        # return redirect("Purchase")
+            product=ProductSerializer(product).data
+            return JsonResponse({"product":product},status=201)
         
     else:
         form=ProductForm()
@@ -193,21 +198,25 @@ def base(request):
     return render(request,"base.html")
 
 def gasfee(request):
+    print(request.POST)
     if request.method=="POST":
         form=GasFeeForm(request.POST)
         if form.is_valid():
-            form.save()
+            gas_fee=form.save()
+            
+            # gas_fee=GasFeeSerializer(gas_fee).data
             return redirect(gasfee)
+            # return JsonResponse({"gasfee":gas_fee},status=201)
     else:
         gasfees=GasFee.objects.all()
         fees=[]
         for i in gasfees:
             fees.append(i.fee)
         try:
-            avg= sum(fees)/len(fees)
+            avg= round(sum(fees)/len(fees),4)
         except:
             avg=0
-        overall=sum(fees)
+        overall=round(sum(fees),4)
         x_data=[i.date.strftime("%d-%m-%Y") for i in gasfees]
         y_data=[i.fee for i in gasfees ]
         form=GasFeeForm()
@@ -225,6 +234,10 @@ def transactions(request):
     transactions=Transaction.objects.filter(user=request.user)
     context={"transactions":transactions}
     return render(request,"transaction.html",context)
+def DeleteTransaction(request,transaction_id):
+    transaction=Transaction.objects.get(pk=int(transaction_id))
+    transaction.delete()
+    return JsonResponse({"id":transaction_id},status=200)
 
 def CalculateCost(available_products,quantity):
     cost=0

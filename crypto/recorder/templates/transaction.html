@@ -310,6 +310,26 @@ td{
           }
         })
       })
+      $(".delete").on("click",function(e){
+        var transaction_id=document.querySelector("#transaction-id").value
+        $.ajax({
+          url:`/delete-transaction/${transaction_id}/`,
+          method:"get",
+          
+          success:function(data){
+            // console.log(data)
+            console.log(data.id)
+            var transaction_row = $(`.tr-1[data-id="${data.id}"]`)[0]
+            console.log(transaction_row)
+            transaction_row.style.display="none"
+
+             $("#transaction-edit-modal").modal("toggle")
+              
+            
+            
+          }
+        })
+      })
       $(".top-link").on("click",function(){
         var filter=this.id
         

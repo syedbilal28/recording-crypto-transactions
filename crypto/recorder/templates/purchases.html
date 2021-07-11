@@ -173,7 +173,7 @@ form.searchbar input[type=text] {
                 </div>
                 <div></div>
             </form>
-            <form action="{% url 'Purchase' %}" class="form-control px-4" method="POST">
+            <form action="{% url 'Purchase' %}" class="form-control px-4" method="POST" id="purchaseform">
               {% csrf_token %}
               {{ form.Type }}
               <div class="form-wrapper no-border py-4">
@@ -216,9 +216,45 @@ form.searchbar input[type=text] {
         </div>
     
     <script>
+      $("#purchaseform").submit(function(event){
+        var form_data= new FormData()
+        event.preventDefault()
+        $("form#purchaseform :input").each(function () {
+        var input = this; // This is the jquery object of the input, do what you will
+        console.log(input)
+        if (this.name == "media") {
+          form_data.append(this.name, this.files[0])
+        }
+        else {
+          form_data.append(this.name, this.value)
+        }
+      });
+
+        $.ajax({
+          url:"/purchase/",
+          method:"post",
+          datatype: "json",
+          processData: false,
+          contentType: false,
+          "headers": {
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          data:form_data
+          ,
+          success:function(data){
+            $("form#purchaseform :input").each(function () {
+              this.value=""           
+            })
+            
+            output=`Purchase of ${data.transaction.product.name} worth ${data.transaction.price} is registered`
+            CreateNotification(output)
+          }
+        })
+      })
        $("#purchases").addClass("active");
       document.querySelector("#id_timestamp").type="date"
       document.querySelector("#id_product").className="get form-control half"
       
     </script>
+    
 {% endblock %}

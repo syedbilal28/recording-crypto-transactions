@@ -369,6 +369,19 @@ ul{
   width: 21% !important;
   
 }
+.toast{
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
+.save-edit{
+  background-color: #009970;
+  border: none;
+}
+.save-edit:hover{
+  background-color: #00f5b0;
+
+}
     </style>        
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -409,7 +422,8 @@ ul{
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary close" data-dismiss="modal" data-target="#transaction-edit-modal">Close</button>
-            <button type="button" class="btn btn-primary green-pill-button save-edit">Save changes</button>
+            <button type="button" class="btn btn-danger delete" data-dismiss="modal" data-target="#transaction-edit-modal">Delete</button>
+            <button type="button" class="btn btn-primary  save-edit">Save changes</button>
           </div>
         </div>
       </div>
@@ -491,7 +505,7 @@ ul{
               </form> -->
         </div>
         <div class="col-sm-1 py-1 text-center">
-            <i class="fas fa-bell white"></i>
+            <!-- <i class="fas fa-bell white"></i> -->
         </div>
         <div class="col-sm-1 py-1 text-center " onclick="OpenSlideMenu()">
             <i class="far fa-sticky-note white"></i>
@@ -551,9 +565,24 @@ ul{
           </div>
        </div>
     </div>
-    
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        
+        <strong class="me-auto">Enchantiom</strong>
+        
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        
+      </div>
+    </div>
 </body>
 <script>
+  function CreateNotification(message){
+  
+    document.querySelector(".toast-body").innerHTML+=message
+    $(".toast").toast('show');
+    }
   $("#form").on("submit",function(event){
     var message=$("#chat_message").val()
     

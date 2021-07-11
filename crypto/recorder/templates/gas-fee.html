@@ -167,7 +167,7 @@ input::placeholder{
                 <h2>Gas Fee</h2>
             </div>
         </form>
-        <form action="{% url 'GasFee' %}" method="POST" class="form-control border border-partial p-4">
+        <form action="{% url 'GasFee' %}" method="POST" class="form-control border border-partial p-4" id="gas-fee-form">
           {% csrf_token %}
             <div    class="form-wrapper no-border">
                 <div class="row">
@@ -252,6 +252,9 @@ input::placeholder{
             </div>
         </form>
       <script>
+       
+
+        
         $("#gas-fee").addClass("active")
         document.querySelector("#id_currency").className="get extra-rounded p-2"
         document.querySelector("#id_date").className="get extra-rounded p-2"

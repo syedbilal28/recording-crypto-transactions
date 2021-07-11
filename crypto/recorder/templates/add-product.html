@@ -135,6 +135,7 @@ div.content {
   .image-upload-wrap{
     height: 100%;
     position: relative;
+    min-height: 200px;
   }
 /* #upload-text{
   position: absolute;
@@ -159,6 +160,7 @@ div.content {
 }
 #product-form{
   border:1px solid #1b1f2f;
+  min-height: 300px;
 }
 
     </style>
@@ -214,12 +216,7 @@ div.content {
                                 {{ form.collection }}
                                 <br>
                             </div>
-                            <div>
-                                <label for="ptype">Type</label><br>
-                                
-                                {{ form.Type }}
-                                <br>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -227,13 +224,57 @@ div.content {
         
     
     <script>
+      $("#product-form").submit(function(event){
+        var form_data= new FormData()
+        event.preventDefault()
+        $("form#product-form :input").each(function () {
+        var input = this; // This is the jquery object of the input, do what you will
+        console.log(input)
+        if (this.name == "image") {
+          form_data.append(this.name, this.files[0])
+        }
+        else {
+          form_data.append(this.name, this.value)
+        }
+      });
+
+        $.ajax({
+          url:"/add-product/",
+          method:"post",
+          datatype: "json",
+          processData: false,
+          contentType: false,
+          "headers": {
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          data:form_data
+          ,
+          success:function(data){
+            $("form#product-form :input").each(function () {
+              this.value=""           
+            })
+            document.querySelector(".file-upload-image").src=""
+            document.querySelector(".image-upload-wrap").innerHTML=`<div class="file-upload-content mr-5 my-2 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="upload-option"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <div class="upload-option"><h5 id="upload-text">Upload image here</h5></div>
+                                    <img class="file-upload-image" src="#" alt="">
+                                    <input type="file" name="image" accept="image/*" required="" id="id_image" class="file-upload-input">
+                                    <div class="image-tittle-wrap" ></div>
+                                </div>`
+          $(".upload-option").css("display","block")
+          $(".file-upload-content").css("border","1px dashed white")
+            output=`${data.product.name} is registered`
+            CreateNotification(output)
+          }
+        })
+      })
       $(".btn-1").on("click",function(){
           $("#product-form").submit()
       })
       document.querySelector("#id_image").className="file-upload-input"
       document.querySelector("#id_name").className="choice form-select"
       document.querySelector("#id_collection").className="choice form-select"
-      document.querySelector("#id_Type").className="choice form-select"
+      
 
       $(".file-upload-content").on("click",function(){
         // $(".file-upload-input").trigger("click")

@@ -147,7 +147,8 @@ class Transaction(models.Model):
     timestamp=models.DateField(null=True)
     note= models.CharField(max_length=2000,null=True)
     profit= models.FloatField(null=True,blank=True)
-
+    def __str__(self):
+        return f"{self.pk}: {self.Type}"
 class Currency(models.Model):
     name=models.CharField(max_length=100)
     def __str__(self):

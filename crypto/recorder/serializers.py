@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import Transaction,Product,Suggestion,Like,Upvote,Downvote,Thread,ChatMessage
+from .models import Transaction,Product,Suggestion,Like,Upvote,Downvote,Thread,ChatMessage,GasFee
 from django.contrib.auth.models import User
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -58,3 +58,8 @@ class ThreadSerializer(serializers.ModelSerializer):
     class Meta:
         model=Thread
         fields=["first","second","updated","timestamp","chat"]
+
+class GasFeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GasFee
+        fields="__all__"
