@@ -48,7 +48,9 @@ Admin
     .flex-item{
         overflow-y: auto;
         /* overflow-x: hidden; */
-        max-height: 350px;   
+        max-height: 350px;  
+        max-width: 350px; 
+       
     }
     .no-style{
   background-color: inherit;
@@ -57,6 +59,9 @@ Admin
 }
 .no-style::-ms-expand {
     display: none;
+}
+.activity-holder{
+    font-size: 14px;
 }
 
 
@@ -218,7 +223,7 @@ Admin
 
                         </div>
                     </div>
-                    <div class="col-10">
+                    <div class="col-6">
                         <div class="row">
                             <p class="timestamp">${new Date(activity.timestamp).toLocaleString()}</p>
                         </div>

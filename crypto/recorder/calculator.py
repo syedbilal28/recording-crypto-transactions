@@ -1,4 +1,4 @@
-
+import copy
 class Transaction:
     def __init__(self,name):
         self.name=name
@@ -7,7 +7,16 @@ class Transaction:
     def __str__(self):
         return f"{self.name} {self.purchase} {self.sales}"
 def ProfitCalculator(transactions):
-    transactions_with_prices=[]
+    transactions_with_profits={}
+    for i in transactions:
+        try:
+            transactions_with_profits[i.product.name].append(i.profit)
+        except:
+            transactions_with_profits[i.product.name]=[]
+    for key,value in transactions_with_profits.items():
+        transactions_with_profits[key]=sum(value)/len(value)
+    print(transactions_with_profits)
+    return transactions_with_profits
 
     for i in transactions:
         flag=True
@@ -30,4 +39,19 @@ def ProfitCalculator(transactions):
     
     return transactions_with_prices
 
-        
+def GetAvailableTransaction(transactions,available_quantity):
+    print(f"original transaction {transactions}")
+    transactions=list(transactions)[::-1]
+    print(f"reversed {transactions}")
+    available_transactions=[]
+    count=0
+    for i in transactions:
+        if count < available_quantity:
+            available_transactions.append(copy.deepcopy(i))
+            count+=i.quantity
+        if count > available_quantity:
+            difference= count-available_quantity
+            available_transactions[-1].quantity-=difference
+            break
+    return available_transactions[::-1]
+

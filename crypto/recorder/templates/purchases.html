@@ -243,7 +243,9 @@ form.searchbar input[type=text] {
           ,
           success:function(data){
             $("form#purchaseform :input").each(function () {
-              this.value=""           
+            if(this.name !="Type"){
+                this.value=""           
+              }
             })
             
             output=`Purchase of ${data.transaction.product.name} worth ${data.transaction.price} is registered`

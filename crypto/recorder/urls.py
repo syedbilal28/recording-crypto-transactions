@@ -1,8 +1,9 @@
 from django.urls import path
 from . import views
 urlpatterns=[
+    path("",views.index,name="Index"),
     path("signup/",views.signup,name="Signup"),
-    path("",views.Login,name="Login"),
+    path("login/",views.Login,name="Login"),
     path("purchase/",views.purchase,name="Purchase"),
     path('add-product/',views.AddProduct,name="Addproduct"),
     path("sales/",views.sale,name="Sales"),
@@ -26,5 +27,6 @@ urlpatterns=[
     path("api/chat/",views.chatApi,name="ChatApi"),
     path("send-message/",views.SendMessage,name="SendMessage"),
     path("api/chat-admin/<str:username>/",views.ChatApiAdmin,name='ChatAPIAdmin'),
+    path("add-suggestion/",views.suggestion,name="AddSuggestion")
     
 ]

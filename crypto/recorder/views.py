@@ -1,9 +1,9 @@
 
 from django.http.response import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
-from .forms import GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm
+from .forms import ContactForm, GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm,ContactForm
 from django.contrib.auth import login, logout,authenticate
-from .calculator import ProfitCalculator
+from .calculator import ProfitCalculator,GetAvailableTransaction
 from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote,ChatMessage,Thread
 from datetime import datetime,date
 from django.contrib.auth.models import User
@@ -12,6 +12,21 @@ from .serializers import ChatMessageSerializer, SuggestionSerializer, Transactio
 import calendar
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
+
+def index(request):
+    if request.method=="POST":
+        form=ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("Index")
+    
+    else:
+
+        form=ContactForm()
+        context={"form":form}
+        return render(request,"index.html",context)
+
+
 def signup(request):
     if request.method== "POST":
         form=SignupForm(request.POST)
@@ -62,6 +77,8 @@ def purchase(request):
             timestamp=datetime.strptime(data['timestamp'],'%Y-%m-%d').date(),
             note=data['note']
         )
+        transaction.cost_per_piece=transaction.price/transaction.quantity
+        transaction.save()
         try:
             inventory= Inventory.objects.get(user=request.user,product=transaction.product)
         except:
@@ -128,32 +145,49 @@ def sale(request):
             percentage= float(data["percentage"])
         )
         previous_transactions= Transaction.objects.filter(user=transaction.user,Type="purchase")
-        print(previous_transactions)
+        
         available_units= Inventory.objects.filter(user=transaction.user,product=transaction.product)[0].available_quantity
         print(available_units)
-        num=0
+        previous_transactions=GetAvailableTransaction(previous_transactions,available_units)
+        print(previous_transactions)
+        cost=0
+        accrued_products=0
+        sold_quantity=int(data["quantity"])
         available_products=[]
-        for i in previous_transactions:
-            if num < available_units:
-                num+=i.quantity
-                available_products.append(copy.deepcopy(i))
-                if num >= available_units:
-                    available_products[-1].quantity-=(num-available_units)
-                    cost=CalculateCost(available_products,transaction.quantity) 
-                    print("calculating profit")
-                    profit=transaction.price-cost
+        want= sold_quantity
+        current_transaction=0
+        while want >0:
+            
+            cost_per_piece=previous_transactions[current_transaction].cost_per_piece
+            print(f"cost per piece {cost_per_piece}")
+            print(f"want: {want}, quantity: {previous_transactions[current_transaction].quantity}")
+            
+            print("inside first if")
+            cost+= (previous_transactions[current_transaction].quantity*cost_per_piece)
+            want-=previous_transactions[current_transaction].quantity
+            print(f"wante after sub {want}")
+            if want <0:
 
-                    transaction.profit= profit
-                    print("Put profit")
-                    transaction.save()
-            else:
+                print("inside first if")
+                difference=abs(want)
+                cost-=(difference*cost_per_piece)
                 break
+            current_transaction+=1
+            print("after break")
+        print(f"cost {cost}")
+        profit= transaction.price-cost
+        transaction.profit=profit
+        transaction.save()
+
+            
 
         inventory.available_quantity-=int(data['quantity'])
         inventory.save()
         # return HttpResponse("Hello Worls")
         product=Product.objects.get(pk=int(data['product']))
-        return redirect(f"/report/{product.pk}/")
+        transaction=TransactionSerializer(transaction).data
+        return JsonResponse({"transaction":transaction},status=201)
+        # return redirect(f"/report/{product.pk}/")
         # try:
         #     inventory=Inventory.objects.get(user=request.user,product=)
     else:
@@ -167,30 +201,28 @@ def report(request,product_id):
     except:
         return redirect("/report/1/")
 
-    transactions_sp= Transaction.objects.filter(user=request.user,product=product)  
-    profit=ProfitCalculator(transactions_sp)
-    transactions=transactions_sp.filter(Type="sale")
-    if len(profit)>0:
-        overall_profit=round(((profit[0].sales-profit[0].purchase)/profit[0].purchase)*100,3)
-    else:
-        overall_profit=0
+    transactions= Transaction.objects.filter(user=request.user,product=product,Type="sale")  
+    profit=0
+    for i in transactions:
+        profit+=i.profit
+    overall_profit=profit
     
-
     all_transactions= Transaction.objects.filter(user=request.user)
     profits=ProfitCalculator(all_transactions)
-    print(profits)
+    print(f"profits {profits}")
     transaction_with_profits=[]
-    for i in profits:
-        temp=((i.sales-i.purchase)/i.purchase)*100
-        if temp <0:
-            temp=0
-        transaction_with_profits.append(temp)
+    for key,value in profits.items():
+        # temp=((i.sales-i.purchase)/i.purchase)*100
+        # if temp <0:
+        #     temp=0
+        transaction_with_profits.append(value)
         # transaction_with_profits[i.name]= [i.purchase,i.sales] 
     profits=sorted(transaction_with_profits,reverse=True)
     profits=profits[0:4]
     # for i in sales:
     x_data=[i.timestamp.strftime("%d-%m-%Y") for i in transactions]
     y_data=[i.profit for i in transactions]
+    print(y_data)
     context={"x":x_data,"y":y_data,"product":product,"tr_profits":profits,"ov_profit":overall_profit}
     return render(request,"report.html",context)
 
@@ -325,7 +357,7 @@ def admin(request):
     return redirect("Purchase")
 
 def ActivitiesApi(request):
-    activities= Transaction.objects.all().reverse()[:3]
+    activities= Transaction.objects.all().reverse()
     activities=TransactionSerializer(activities,many=True).data
     return JsonResponse({"activities":activities},status=200)
 def UsersApi(request):
@@ -367,3 +399,11 @@ def SendMessage(request):
 
 def email(request):
     return render(request,"admin_email.html")
+@csrf_exempt
+def suggestion(request):
+    suggestion_text=request.POST.get("suggestion")
+    suggestion_object=Suggestion.objects.create(
+        user=request.user,
+        content=suggestion_text
+    )
+    return redirect("Suggestions")

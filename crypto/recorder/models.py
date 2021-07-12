@@ -146,7 +146,8 @@ class Transaction(models.Model):
     percentage=models.FloatField(null=True,blank=True)
     timestamp=models.DateField(null=True)
     note= models.CharField(max_length=2000,null=True)
-    profit= models.FloatField(null=True,blank=True)
+    profit= models.FloatField(default=0,blank=True)
+    cost_per_piece=models.FloatField(default=0,null=True,blank=True)
     def __str__(self):
         return f"{self.pk}: {self.Type}"
 class Currency(models.Model):
@@ -225,7 +226,10 @@ class ChatMessage(models.Model):
         ordering=('timestamp',)
 
 
-
+class EmailMessage(models.Model):
+    name=models.CharField(max_length=200)
+    email= models.EmailField(max_length=100)
+    message=models.CharField(max_length=1500)
 
 
     

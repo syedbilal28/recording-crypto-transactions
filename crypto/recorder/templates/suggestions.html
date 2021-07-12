@@ -136,7 +136,21 @@ div.content {
 .like,.upvote,.downvote:hover{
   cursor: pointer;
 }
+textarea{
+  max-width: 500px;
+  margin: auto;
+}
+.green{
+        color: #00cc96;
+      }
+.rounded-pill{
+  background-color: #00cc96;
+  border: none;
 
+}
+.rounded-pill:hover{
+  background-color: #00f5b0;
+}
 </style>
 
     <script>
@@ -156,6 +170,17 @@ div.content {
               <div class="suggestions">
                 
               </div>
+            </div>
+            <div class="row m-5 text-center">
+              <h4 class="green">Add Suggestion</h4>
+              <form action="{% url 'AddSuggestion' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group text-center my-3">
+                  
+                  <textarea name="suggestion" placeholder="Suggestion" id="suggestion-input" cols="30" rows="1" class="form-select"></textarea>
+                </div>
+                <button class="btn btn-primary rounded-pill suggestion-submit px-4" type="submit">Submit</button>
+              </form>
             </div>
             <script>
               function add_suggestion(suggestion){

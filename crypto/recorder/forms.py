@@ -2,7 +2,9 @@ from django.forms import ModelForm,Form
 from django import forms
 from django.contrib.auth.models import User
 from django.forms.widgets import NumberInput
-from .models import Product, Transaction,GasFee
+from .models import Product, Transaction,GasFee,EmailMessage
+from django.core.mail import send_mail
+from crypto.settings import EMAIL_HOST_USER
 class SignupForm(ModelForm):
     username=forms.CharField(max_length=50,widget=forms.TextInput(attrs={"placeholder":"username","class":"form-control p-2"}))
     email=forms.CharField(max_length=50,widget=forms.EmailInput(attrs={"placeholder":"email","class":"form-control p-2"}))
@@ -50,3 +52,21 @@ class GasFeeForm(ModelForm):
     class Meta:
         model=GasFee
         fields="__all__"
+
+class ContactForm(forms.Form):
+    name=forms.CharField(max_length=200,widget=forms.TextInput(attrs={"class":"form-control p-2","placeholder":"Your Name"}))
+    email=forms.EmailField(max_length=200,widget=forms.EmailInput(attrs={"class":"form-control","placeholder":"Your Email"}))
+    message=forms.CharField(max_length=1500,widget=forms.Textarea(attrs={"class":"form-control p-2","placeholder":"Your Message"}))
+
+    def save(self,commit=False):
+        subject=f"Message from {self.cleaned_data['name']} with email address {self.cleaned_data['email']}"
+        message=self.cleaned_data["message"]
+        recepient="syed.bilal.sba@gmail.com"
+        send_mail(subject, message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+        email=EmailMessage.objects.create(
+            name=self.cleaned_data["name"],
+            email=self.cleaned_data["email"],
+            message=self.cleaned_data["message"]
+        )
+
+        return email

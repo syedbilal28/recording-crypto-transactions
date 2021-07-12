@@ -178,7 +178,7 @@ div.content {
                 
               </div>
               <!-- {% endif %} -->
-            <form action="{% url 'Sales' %}" class="form-control px-4" method="POST">
+            <form action="{% url 'Sales' %}" class="form-control px-4" method="POST" id="sales-form">
               {% csrf_token %}
               {{ form.Type }}
                 <div class="form-wrapper py-4 no-border">
@@ -225,6 +225,43 @@ div.content {
         </div>
     
     <script>
+      $("#sales-form").submit(function(event){
+        var form_data= new FormData()
+        event.preventDefault()
+        $("form#sales-form :input").each(function () {
+        var input = this; // This is the jquery object of the input, do what you will
+        console.log(input)
+        if (this.name == "iamge") {
+          form_data.append(this.name, this.files[0])
+        }
+        else {
+          form_data.append(this.name, this.value)
+        }
+      });
+
+        $.ajax({
+          url:"/sales/",
+          method:"post",
+          datatype: "json",
+          processData: false,
+          contentType: false,
+          "headers": {
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          data:form_data
+          ,
+          success:function(data){
+            $("form#sales-form :input").each(function () {
+            if(this.name !="Type"){
+                this.value=""           
+              }
+            })
+            
+            output=`Sales of ${data.transaction.product.name} worth ${data.transaction.price} is registered`
+            CreateNotification(output)
+          }
+        })
+      })
       document.querySelector("#id_product").className="get form-control half extra-rounded"
       $("#sales").addClass("active")
     </script>
