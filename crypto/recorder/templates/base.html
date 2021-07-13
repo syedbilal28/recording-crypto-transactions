@@ -521,18 +521,20 @@ ul{
             <i class="far fa-sticky-note white"></i>
         </div>
         <div class="col-sm-1 py-1 text-center ">
-          {% if request.user.is_staff %}
+          
           <div class="dropdown">
             <a class="no-style dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-circle" ></i>
             </a>
             
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              {% if request.user.is_staff %}
               <li><a class="dropdown-item" href="/administrator/">Admin</a></li>
-              
+             {% endif %}
+             <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+
             </ul>
           </div>
-          {% endif %}
         </div>
     </div>
     </header>

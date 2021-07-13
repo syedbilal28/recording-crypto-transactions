@@ -99,9 +99,9 @@ Admin
                 
                 
                     <button class=" no-style" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-plus small seen"></i>
+                        <i class="fas fa-plus small seen " id="create-message"></i>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" id="create-message-dropdown">
                       <li><a class="dropdown-item" href="#">Action</a></li>
                       
                     </ul>
@@ -149,7 +149,24 @@ Admin
 </div>
 
 <script>
-    
+    $("#create-message").on("click",function(){
+        
+        $.ajax({
+            url:"/api/users/",
+            method:"get",
+            success:function(data){
+                data.users.forEach(add_user_dropdown)
+            }
+        })
+    })
+    function add_user_dropdown(user){
+        user_html=`<li><a class="dropdown-item create-message-opt" href="#">${user.username}</a></li>`
+        document.querySelector("#create-message-dropdown").innerHTML+=user_html
+    }
+    $(".create-message-opt").on("click",function(){
+
+        
+    })
     $("#add-user").on("click",function(){
         window.location.href="/admin/auth/user/add/"
     })

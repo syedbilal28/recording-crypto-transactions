@@ -319,10 +319,15 @@ def TransactionsFilter(request,filter):
     transactions=TransactionSerializer(transactions,many=True).data
     return JsonResponse({"transactions":transactions},status=200)
 
-def suggestions(request):
-    
-    return render(request,"suggestions.html")
+def admin_suggestions(request):
+    if request.user.is_staff:
 
+        return render(request,"admin_suggestions.html")
+    return redirect("UserSuggestions")
+def user_suggestions(request):
+    if request.user.is_staff:
+        return redirect("AdminSuggestions")
+    return render(request,"suggestions.html")
 def SuggestionsAPI(request):
     suggestions= Suggestion.objects.all()
     suggestions=SuggestionSerializer(suggestions,many=True).data
@@ -407,3 +412,7 @@ def suggestion(request):
         content=suggestion_text
     )
     return redirect("Suggestions")
+
+def Logout(request):
+    logout(request)
+    return redirect("Login")

@@ -1,9 +1,11 @@
+from django.contrib.auth import logout
 from django.urls import path
 from . import views
 urlpatterns=[
     path("",views.index,name="Index"),
     path("signup/",views.signup,name="Signup"),
     path("login/",views.Login,name="Login"),
+    path("logout/",views.Logout,name="Logout"),
     path("purchase/",views.purchase,name="Purchase"),
     path('add-product/',views.AddProduct,name="Addproduct"),
     path("sales/",views.sale,name="Sales"),
@@ -16,7 +18,8 @@ urlpatterns=[
     path("edit-transaction/",views.EditTransaction,name="EditTransaction"),
     path("delete-transaction/<str:transaction_id>/",views.DeleteTransaction,name="DeleteTransaction"),
     path("transactions-filter/<str:filter>/",views.TransactionsFilter,name="TransactionFilter"),
-    path("suggestions/",views.suggestions,name="Suggestions"),
+    path("suggestions/",views.user_suggestions,name="UserSuggestions"),
+    path("admin-suggestions/",views.admin_suggestions,name="AdminSuggestions"),
     path("api/suggestions/",views.SuggestionsAPI,name="SuggestionsAPI"),
     path("like/<str:suggestion_id>/",views.like,name="like"),
     path("upvote/<str:suggestion_id>/",views.upvote,name="upvote"),
