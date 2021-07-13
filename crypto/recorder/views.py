@@ -3,7 +3,7 @@ from django.http.response import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from .forms import ContactForm, GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm,ContactForm
 from django.contrib.auth import login, logout,authenticate
-from .calculator import ProfitCalculator,GetAvailableTransaction
+from .calculator import ProfitCalculator,GetAvailableTransaction,get_distinct_products
 from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote,ChatMessage,Thread
 from datetime import datetime,date
 from django.contrib.auth.models import User
@@ -201,11 +201,13 @@ def sale(request):
         return render(request,"sales.html",context)
 
 def report(request,product_id):
+
     try:
         product= Product.objects.get(pk=int(product_id))
     except:
         return redirect("/report/1/")
-
+    
+    
     transactions= Transaction.objects.filter(user=request.user,Type="sale")  
     profit=0
     for i in transactions:
@@ -213,6 +215,14 @@ def report(request,product_id):
     overall_profit=profit
     
     all_transactions= Transaction.objects.filter(user=request.user)
+    user_products=get_distinct_products(all_transactions)
+    try:
+        temp_index_product=user_products[int(product_id)-1]
+    except:
+        temp_index_product=user_products[0]
+
+    if product != temp_index_product:
+        return redirect(f"/report/{temp_index_product.pk}/")
     profits=ProfitCalculator(all_transactions)
     print(f"profits {profits}")
     transaction_with_profits=[]
@@ -417,7 +427,7 @@ def suggestion(request):
         user=request.user,
         content=suggestion_text
     )
-    return redirect("Suggestions")
+    return redirect("UserSuggestions")
 
 def Logout(request):
     logout(request)

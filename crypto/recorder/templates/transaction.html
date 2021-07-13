@@ -349,21 +349,59 @@ td{
           method:"get",
           success:function(data){
             var table_body=document.querySelector("tbody")
-            table_body.innerHTML=''
-            $(data.transactions).each(function(){
-              temp_data_to_add=`<tr class="tr-1"  data-id="${this.id}">
+        table_body.innerHTML=''
+            data.transactions.forEach(add_transaction)
+          }
+        })
+        
+      }
+      function add_transaction(transaction){
+        var table_body=document.querySelector("tbody")
+        // table_body.innerHTML=''
+        console.log(transaction)
+        temp_data_to_add=`<tr class="tr-1"  data-id="${transaction.id}">
                         
-                        <td class="td-1"><img src="${this.product.image}" class="transaction-img px-2" alt="">${this.product.name}</td>
-                        <td class="td-2">${this.price}</td>
-                        <td class="td-2">${this.quantity}</td>
-                        <td class="td-3">${this.timestamp}</td>
+                        <td class="td-1"><img src="${transaction.product.image}" class="transaction-img px-2" alt="">${transaction.product.name}</td>
+                        <td class="td-2">${transaction.price}</td>
+                        <td class="td-2">${transaction.quantity}</td>
+                        <td class="td-3">${transaction.timestamp}</td>
                         <td class="not-include"><i class="fas fa-ellipsis-h small gray edit-opt"></i></td>  
                     </tr>`
               table_body.innerHTML+=temp_data_to_add
-
+              $(".edit-opt").on("click",function(){
+        
+        var transaction_id= this.parentElement.parentElement.dataset.id
+        $.ajax({
+          url:`/transaction/${transaction_id}/`,
+          method:"get",
+          success:function(data){
+            console.log(data)
+            var transaction_id_modal=$("#transaction-id")
+            transaction_id_modal[0].value=data.transaction.id
+            var transaction_product_modal=$("#product-select")[0]
+            
+            $(data.products).each(function(){
+              console.log(this)
+              var temp_opt=`<option value="${this.id}">${this.name}</option>`
+              if(data.transaction.product.id == this.id){
+                temp_opt=`<option value="${this.id}" selected>${this.name}</option>`
+              }
+              transaction_product_modal.innerHTML+=temp_opt
             })
+            
+            var transaction_price_modal=$("#transaction-price")[0]
+            transaction_price_modal.value= data.transaction.price
+
+            var transaction_quantity_modal=$("#transaction-quantity")[0]
+            transaction_quantity_modal.value= data.transaction.quantity
+
+            var transaction_date_modal=$("#transaction-date")[0]
+            transaction_date_modal.value= data.transaction.timestamp
+
+            $("#transaction-edit-modal").modal("toggle")
           }
         })
+      })
       }
       $("#transactions").addClass("active")
     </script>

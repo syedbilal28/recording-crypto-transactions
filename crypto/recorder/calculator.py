@@ -1,4 +1,5 @@
 import copy
+from .models import Product
 class Transaction:
     def __init__(self,name):
         self.name=name
@@ -6,6 +7,14 @@ class Transaction:
         self.sales=0
     def __str__(self):
         return f"{self.name} {self.purchase} {self.sales}"
+
+def get_distinct_products(transactions):
+    products=[]
+    for i in transactions:
+        temp_product=i.product
+        if temp_product not in products:
+            products.append(temp_product)
+    return products
 def ProfitCalculator(transactions):
     transactions_with_profits={}
     for i in transactions:
@@ -14,7 +23,10 @@ def ProfitCalculator(transactions):
         except:
             transactions_with_profits[i.product.name]=[]
     for key,value in transactions_with_profits.items():
-        transactions_with_profits[key]=sum(value)/len(value)
+        try:
+            transactions_with_profits[key]=sum(value)/len(value)
+        except:
+            transactions_with_profits[key]=0
     print(transactions_with_profits)
     return transactions_with_profits
 
