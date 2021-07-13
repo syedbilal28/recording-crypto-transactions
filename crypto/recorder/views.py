@@ -48,7 +48,12 @@ def Login(request):
             username=form.cleaned_data["username"]
             print(username)
             password=form.cleaned_data["password"]
-            user=authenticate(request,username=username,password=password)
+            try:
+                user=authenticate(request,username=username,password=password)
+            except:
+                form=LoginForm()
+                context={"form":form,"message":"Your email returned multiple users, try using your username"}
+                return render(request,"login.html",context)
             # if not user:
             #     user=authenticate(request,email=username,password=password)
             if user:

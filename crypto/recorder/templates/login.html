@@ -59,6 +59,11 @@
         <nav class="new"></nav>
             <div class="container d-flex justify-content-center align-items-center" >
                 <div class="form-wrapper">
+                    {% if message %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                      </div>
+                    {% endif %}                      
                     <h1 class="heading">Login To Your Account</h1>
                     <form action="{% url 'Login' %}" class="form-control" method="POST">
                         {% csrf_token %}
