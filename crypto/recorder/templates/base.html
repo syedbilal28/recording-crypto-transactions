@@ -528,7 +528,8 @@ ul{
             </a>
             
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              {% if request.user.is_staff %}
+              {% if request.user.is_ssuperuser %}
+              
               <li><a class="dropdown-item" href="/administrator/">Admin</a></li>
              {% endif %}
              <li><a class="dropdown-item" href="/logout/">Logout</a></li>

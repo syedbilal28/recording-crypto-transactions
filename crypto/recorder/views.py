@@ -201,7 +201,7 @@ def report(request,product_id):
     except:
         return redirect("/report/1/")
 
-    transactions= Transaction.objects.filter(user=request.user,product=product,Type="sale")  
+    transactions= Transaction.objects.filter(user=request.user,Type="sale")  
     profit=0
     for i in transactions:
         profit+=i.profit
@@ -215,11 +215,12 @@ def report(request,product_id):
         # temp=((i.sales-i.purchase)/i.purchase)*100
         # if temp <0:
         #     temp=0
-        transaction_with_profits.append(value)
+        transaction_with_profits.append(round(value,2))
         # transaction_with_profits[i.name]= [i.purchase,i.sales] 
     profits=sorted(transaction_with_profits,reverse=True)
     profits=profits[0:4]
     # for i in sales:
+    transactions= Transaction.objects.filter(user=request.user,product=product,Type="sale")
     x_data=[i.timestamp.strftime("%d-%m-%Y") for i in transactions]
     y_data=[i.profit for i in transactions]
     print(y_data)
