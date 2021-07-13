@@ -102,7 +102,7 @@ Admin
                         <i class="fas fa-plus small seen " id="create-message"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" id="create-message-dropdown">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      
                       
                     </ul>
                 
@@ -158,15 +158,31 @@ Admin
                 data.users.forEach(add_user_dropdown)
             }
         })
+    $(".create-message-opt").on("click",function(){
+        alert("hi")
+    })        
     })
+    
+
     function add_user_dropdown(user){
-        user_html=`<li><a class="dropdown-item create-message-opt" href="#">${user.username}</a></li>`
+        user_html=`<li><p class="dropdown-item create-message-opt" onclick="CreateChat(event)">${user.username}</p></li>`
         document.querySelector("#create-message-dropdown").innerHTML+=user_html
     }
-    $(".create-message-opt").on("click",function(){
-
-        
-    })
+    function CreateChat(e){
+        target_user= e.target.innerText
+        $.ajax({
+            url:`/api/chat-admin/${target_user}/`,
+            method:"get",
+            success:function(data){
+                window.other_user=data.thread.second.username
+                document.querySelector(".thread-username").innerText=window.other_user
+                document.querySelector("#Chatbox").innerHTML=""
+                data.thread.chat.forEach(add_message)
+                OpenSlideMenu()
+            }
+        })
+    }
+    
     $("#add-user").on("click",function(){
         window.location.href="/admin/auth/user/add/"
     })
@@ -192,29 +208,31 @@ Admin
                 document.querySelector(".users-holder").innerHTML+=user_html
     }
     function add_thread(thread){
-        console.log(thread)
-        thread_html=`<div class="chat row px-2 py-1 my-2">
-                    <div class="col-2">
-                        <img src="" alt="" class="profile-img">
-                    </div>
-                    <div class="col-8">
-                        <div class="row">
-                            <p>${thread.second.username}</p>
+        if (thread.chat.length >0){
+            console.log(thread)
+            thread_html=`<div class="chat row px-2 py-1 my-2">
+                        <div class="col-2">
+                            <img src="" alt="" class="profile-img">
                         </div>
-                        <div class="row">
-                            <p class="message lighter">${thread.chat[thread.chat.length-1].message}</p>
+                        <div class="col-8">
+                            <div class="row">
+                                <p>${thread.second.username}</p>
+                            </div>
+                            <div class="row">
+                                <p class="message lighter">${thread.chat[thread.chat.length-1].message}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-2 p-0">
-                        <div class="row">
-                            <p class="extra-small">seen ago</p>
+                        <div class="col-2 p-0">
+                            <div class="row">
+                                
+                            </div>
+                            <div class="row">
+                                
+                            </div>
                         </div>
-                        <div class="row">
-                            <i class="fas fa-check-double small"></i>
-                        </div>
-                    </div>
-                </div>`
-                document.querySelector(".chat-holder").innerHTML+=thread_html
+                    </div>`
+                    document.querySelector(".chat-holder").innerHTML+=thread_html
+        }
                 $(".chat").on("click",function(){
                     
                     other_user=this.children[1].children[0].children[0].innerText

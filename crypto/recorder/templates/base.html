@@ -528,7 +528,7 @@ ul{
             </a>
             
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              {% if request.user.is_ssuperuser %}
+              {% if request.user.is_superuser %}
               
               <li><a class="dropdown-item" href="/administrator/">Admin</a></li>
              {% endif %}
@@ -618,7 +618,14 @@ ul{
   function OpenSlideMenu(){
     var sidebar=document.querySelector("#right-sidebar")
     $(sidebar).addClass("active")
-    
+    $.ajax({
+      url:"/api/chat/",
+      method:"get",
+      success:function(data){
+        
+        data.thread.chat.forEach(add_message)
+      }
+    })
     // sidebar.style.width="21%"
     // sidebar.style.display="block"
     

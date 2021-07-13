@@ -203,9 +203,10 @@ def sale(request):
 
 def report(request,product_id):
 
-    try:
+    try: 
         product= Product.objects.get(pk=int(product_id))
     except:
+        
         return redirect("/report/1/")
     
     
@@ -217,13 +218,17 @@ def report(request,product_id):
     
     all_transactions= Transaction.objects.filter(user=request.user)
     user_products=get_distinct_products(all_transactions)
-    try:
-        temp_index_product=user_products[int(product_id)-1]
-    except:
-        temp_index_product=user_products[0]
+    if len(user_products) <1:
+        product= Product.objects.first()
+    else:
+        try:
+            temp_index_product=user_products[int(product_id)-1]
+        except:
+            temp_index_product=user_products[0]
 
-    if product != temp_index_product:
-        return redirect(f"/report/{temp_index_product.pk}/")
+        if product != temp_index_product:
+            print("REDIORECTINGGGG")
+            return redirect(f"/report/{temp_index_product.pk}/")
     profits=ProfitCalculator(all_transactions)
     print(f"profits {profits}")
     transaction_with_profits=[]
@@ -435,7 +440,7 @@ def Logout(request):
     return redirect("Login")
 
 def AddCollections(request):
-    url="https://api.opensea.io/api/v1/collections?offset=0&limit=300"
+    url="https://api.opensea.io/api/v1/collections?offset=300&limit=1000"
     r=requests.get(url)
     r= r.json()
     # print(str(r))
