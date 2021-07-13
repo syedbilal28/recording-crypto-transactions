@@ -4,13 +4,14 @@ from django.shortcuts import render,redirect
 from .forms import ContactForm, GasFeeForm, ProductForm, SignupForm,LoginForm,PurchaseForm,SaleForm,ContactForm
 from django.contrib.auth import login, logout,authenticate
 from .calculator import ProfitCalculator,GetAvailableTransaction,get_distinct_products
-from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote,ChatMessage,Thread
+from .models import Transaction,Product,GasFee,Inventory,Suggestion,Upvote,Downvote,ChatMessage,Thread,Collection
 from datetime import datetime,date
 from django.contrib.auth.models import User
 import copy
 from .serializers import ChatMessageSerializer, SuggestionSerializer, TransactionSerializer,ProductSerializer,GasFeeSerializer,ThreadSerializer,UserSerializer
 import calendar
 from django.views.decorators.csrf import csrf_exempt
+import requests
 # Create your views here.
 
 def index(request):
@@ -432,3 +433,17 @@ def suggestion(request):
 def Logout(request):
     logout(request)
     return redirect("Login")
+
+def AddCollections(request):
+    url="https://api.opensea.io/api/v1/collections?offset=0&limit=300"
+    r=requests.get(url)
+    r= r.json()
+    # print(str(r))
+    bundles= r['collections']
+    for bundle in bundles:
+        Collection.objects.create(name=bundle['name'])
+    return HttpResponse("done")
+    # with open("text.txt", "w", encoding="utf-8") as f:
+    #     f.write(str(bundles[0]))
+    
+    f.close()

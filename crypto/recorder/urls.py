@@ -30,6 +30,7 @@ urlpatterns=[
     path("api/chat/",views.chatApi,name="ChatApi"),
     path("send-message/",views.SendMessage,name="SendMessage"),
     path("api/chat-admin/<str:username>/",views.ChatApiAdmin,name='ChatAPIAdmin'),
-    path("add-suggestion/",views.suggestion,name="AddSuggestion")
+    path("add-suggestion/",views.suggestion,name="AddSuggestion"),
+    path("add-collections/",views.AddCollections,name='AddCollection')
     
 ]

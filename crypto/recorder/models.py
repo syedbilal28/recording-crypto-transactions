@@ -117,7 +117,7 @@ class Downvote(models.Model):
 
 class Collection(models.Model):
     name=models.CharField(max_length=100)
-    logo=models.ImageField(upload_to=to_upload)
+    logo=models.ImageField(upload_to=to_upload,null=True,blank=True)
 
     def __str__(self):
         return self.name
