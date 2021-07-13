@@ -441,7 +441,10 @@ def AddCollections(request):
     # print(str(r))
     bundles= r['collections']
     for bundle in bundles:
-        Collection.objects.create(name=bundle['name'])
+        try:
+            Collection.objects.create(name=bundle['name'])
+        except:
+            pass
     return HttpResponse("done")
     # with open("text.txt", "w", encoding="utf-8") as f:
     #     f.write(str(bundles[0]))

@@ -116,7 +116,7 @@ class Downvote(models.Model):
         return f"{self.suggestion.user.username}: {self.by.username} {self.suggestion.pk}"
 
 class Collection(models.Model):
-    name=models.CharField(max_length=100)
+    name=models.CharField(max_length=100, unique=True)
     logo=models.ImageField(upload_to=to_upload,null=True,blank=True)
 
     def __str__(self):
