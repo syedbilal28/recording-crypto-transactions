@@ -238,6 +238,7 @@ div.content {
       $(".fa-sort-up").on("click",function(){
         current_product=parseInt(window.location.pathname.split("/")[2])
         current_product+=1
+        // alert(current_product)
         window.location.href=`/report/${current_product}/`
       })
       $(".fa-sort-down").on("click",function(){

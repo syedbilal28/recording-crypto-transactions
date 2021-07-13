@@ -202,15 +202,18 @@ def sale(request):
         return render(request,"sales.html",context)
 
 def report(request,product_id):
-
+    transactions= Transaction.objects.filter(user=request.user,Type="sale")
+    user_products=get_distinct_products(transactions)
+    if len(transactions) <1:
+        return render(request,"error.html",{"message":"No sales transaction has been registered yet."})
     try: 
         product= Product.objects.get(pk=int(product_id))
     except:
-        
-        return redirect("/report/1/")
+        print("Got except")
+        return redirect(f"/report/{user_products[0].pk}/")
     
     
-    transactions= Transaction.objects.filter(user=request.user,Type="sale")  
+      
     profit=0
     for i in transactions:
         profit+=i.profit
@@ -222,13 +225,16 @@ def report(request,product_id):
         product= Product.objects.first()
     else:
         try:
-            temp_index_product=user_products[int(product_id)-1]
+            for i in user_products:
+                if i.pk == int(product_id):
+                    ind=user_products.index(i)
+                    product=user_products[ind+1]
         except:
-            temp_index_product=user_products[0]
+            product=user_products[0]
 
-        if product != temp_index_product:
-            print("REDIORECTINGGGG")
-            return redirect(f"/report/{temp_index_product.pk}/")
+        # if product != temp_index_product:
+        #     print("REDIORECTINGGGG")
+        #     return redirect(f"/report/{temp_index_product.pk}/")
     profits=ProfitCalculator(all_transactions)
     print(f"profits {profits}")
     transaction_with_profits=[]
